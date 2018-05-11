@@ -1,0 +1,7 @@
+*.pcb-
+*.fp-
+*.bak*
+*~
+*.ps
+*.pdf
+*.net

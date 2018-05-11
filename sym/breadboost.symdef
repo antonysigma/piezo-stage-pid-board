@@ -1,0 +1,19 @@
+# BreadBoost
+# Antony's BreadBoost PCB board
+
+[labels]
+
+BreadBoost
+refdes=U?
+! footprint=breadboost_pcb
+
+[left]
+
+1 +3V
+
+[right]
+
+3 +5V
+
+[bottom]
+2 GND

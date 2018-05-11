@@ -1,0 +1,15 @@
+[labels]
+    MAX4544
+    refdes=U?
+!   footprint=SO8
+!   net=Vdd:8
+!   net=Vss:4
+
+[left]
+    1 NO
+    3 NC
+
+    7 IN
+
+[right]
+    2 COM

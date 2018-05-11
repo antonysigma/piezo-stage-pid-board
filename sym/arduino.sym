@@ -1,0 +1,444 @@
+v 20120816 1
+P 100 7600 400 7600 1 0 0
+{
+T 300 7650 5 8 1 1 0 6 1
+pinnumber=1
+T 300 7550 5 8 0 1 0 8 1
+pinseq=1
+T 450 7600 9 8 1 1 0 0 1
+pinlabel=NC
+T 450 7600 5 8 0 1 0 2 1
+pintype=oc
+}
+P 100 7200 400 7200 1 0 0
+{
+T 300 7250 5 8 1 1 0 6 1
+pinnumber=2
+T 300 7150 5 8 0 1 0 8 1
+pinseq=2
+T 450 7200 9 8 1 1 0 0 1
+pinlabel=IOREF
+T 450 7200 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 6800 400 6800 1 0 0
+{
+T 300 6850 5 8 1 1 0 6 1
+pinnumber=3
+T 300 6750 5 8 0 1 0 8 1
+pinseq=3
+T 450 6800 9 8 1 1 0 0 1
+pinlabel=RESET (PC6)
+T 450 6800 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 6400 400 6400 1 0 0
+{
+T 300 6450 5 8 1 1 0 6 1
+pinnumber=4
+T 300 6350 5 8 0 1 0 8 1
+pinseq=4
+T 450 6400 9 8 1 1 0 0 1
+pinlabel=3V3
+T 450 6400 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 100 6000 400 6000 1 0 0
+{
+T 300 6050 5 8 1 1 0 6 1
+pinnumber=5
+T 300 5950 5 8 0 1 0 8 1
+pinseq=5
+T 450 6000 9 8 1 1 0 0 1
+pinlabel=5V
+T 450 6000 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 100 5600 400 5600 1 0 0
+{
+T 300 5650 5 8 1 1 0 6 1
+pinnumber=6
+T 300 5550 5 8 0 1 0 8 1
+pinseq=6
+T 450 5600 9 8 1 1 0 0 1
+pinlabel=GND (GND)
+T 450 5600 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 100 5200 400 5200 1 0 0
+{
+T 300 5250 5 8 1 1 0 6 1
+pinnumber=7
+T 300 5150 5 8 0 1 0 8 1
+pinseq=7
+T 450 5200 9 8 1 1 0 0 1
+pinlabel=GND (GND)
+T 450 5200 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 100 4800 400 4800 1 0 0
+{
+T 300 4850 5 8 1 1 0 6 1
+pinnumber=8
+T 300 4750 5 8 0 1 0 8 1
+pinseq=8
+T 450 4800 9 8 1 1 0 0 1
+pinlabel=VIN
+T 450 4800 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 100 4400 400 4400 1 0 0
+{
+T 300 4450 5 8 1 1 0 6 1
+pinnumber=9
+T 300 4350 5 8 0 1 0 8 1
+pinseq=9
+T 450 4400 9 8 1 1 0 0 1
+pinlabel=A0 (PC0)
+T 450 4400 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 4000 400 4000 1 0 0
+{
+T 300 4050 5 8 1 1 0 6 1
+pinnumber=10
+T 300 3950 5 8 0 1 0 8 1
+pinseq=10
+T 450 4000 9 8 1 1 0 0 1
+pinlabel=A1 (PC1)
+T 450 4000 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 3600 400 3600 1 0 0
+{
+T 300 3650 5 8 1 1 0 6 1
+pinnumber=11
+T 300 3550 5 8 0 1 0 8 1
+pinseq=11
+T 450 3600 9 8 1 1 0 0 1
+pinlabel=A2 (PC2)
+T 450 3600 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 3200 400 3200 1 0 0
+{
+T 300 3250 5 8 1 1 0 6 1
+pinnumber=12
+T 300 3150 5 8 0 1 0 8 1
+pinseq=12
+T 450 3200 9 8 1 1 0 0 1
+pinlabel=A3 (PC3)
+T 450 3200 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 2800 400 2800 1 0 0
+{
+T 300 2850 5 8 1 1 0 6 1
+pinnumber=13
+T 300 2750 5 8 0 1 0 8 1
+pinseq=13
+T 450 2800 9 8 1 1 0 0 1
+pinlabel=A4 (PC4)
+T 450 2800 5 8 0 1 0 2 1
+pintype=io
+}
+P 100 2400 400 2400 1 0 0
+{
+T 300 2450 5 8 1 1 0 6 1
+pinnumber=14
+T 300 2350 5 8 0 1 0 8 1
+pinseq=14
+T 450 2400 9 8 1 1 0 0 1
+pinlabel=A5 (PC5)
+T 450 2400 5 8 0 1 0 2 1
+pintype=io
+}
+P 6700 7600 6400 7600 1 0 0
+{
+T 6500 7650 5 8 1 1 0 0 1
+pinnumber=32
+T 6500 7550 5 8 0 1 0 2 1
+pinseq=32
+T 6350 7600 9 8 1 1 0 6 1
+pinlabel=(PC4) A5
+T 6350 7600 5 8 0 1 0 8 1
+pintype=oc
+}
+P 6700 7200 6400 7200 1 0 0
+{
+T 6500 7250 5 8 1 1 0 0 1
+pinnumber=31
+T 6500 7150 5 8 0 1 0 2 1
+pinseq=31
+T 6350 7200 9 8 1 1 0 6 1
+pinlabel=(PC5) A4
+T 6350 7200 5 8 0 1 0 8 1
+pintype=oc
+}
+P 6700 6800 6400 6800 1 0 0
+{
+T 6500 6850 5 8 1 1 0 0 1
+pinnumber=30
+T 6500 6750 5 8 0 1 0 2 1
+pinseq=30
+T 6350 6800 9 8 1 1 0 6 1
+pinlabel=(AREF) AREF
+T 6350 6800 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 6400 6400 6400 1 0 0
+{
+T 6500 6450 5 8 1 1 0 0 1
+pinnumber=29
+T 6500 6350 5 8 0 1 0 2 1
+pinseq=29
+T 6350 6400 9 8 1 1 0 6 1
+pinlabel=(GND) GND
+T 6350 6400 5 8 0 1 0 8 1
+pintype=pwr
+}
+P 6700 6000 6400 6000 1 0 0
+{
+T 6500 6050 5 8 1 1 0 0 1
+pinnumber=28
+T 6500 5950 5 8 0 1 0 2 1
+pinseq=28
+T 6350 6000 9 8 1 1 0 6 1
+pinlabel=(PB5) DIGITAL13
+T 6350 6000 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 5600 6400 5600 1 0 0
+{
+T 6500 5650 5 8 1 1 0 0 1
+pinnumber=27
+T 6500 5550 5 8 0 1 0 2 1
+pinseq=27
+T 6350 5600 9 8 1 1 0 6 1
+pinlabel=(PB4) DIGITAL12
+T 6350 5600 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 5200 6400 5200 1 0 0
+{
+T 6500 5250 5 8 1 1 0 0 1
+pinnumber=26
+T 6500 5150 5 8 0 1 0 2 1
+pinseq=26
+T 6350 5200 9 8 1 1 0 6 1
+pinlabel=(PB3) DIGITAL11
+T 6350 5200 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 4800 6400 4800 1 0 0
+{
+T 6500 4850 5 8 1 1 0 0 1
+pinnumber=25
+T 6500 4750 5 8 0 1 0 2 1
+pinseq=25
+T 6350 4800 9 8 1 1 0 6 1
+pinlabel=(PB2) DIGITAL10
+T 6350 4800 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 4400 6400 4400 1 0 0
+{
+T 6500 4450 5 8 1 1 0 0 1
+pinnumber=24
+T 6500 4350 5 8 0 1 0 2 1
+pinseq=24
+T 6350 4400 9 8 1 1 0 6 1
+pinlabel=(PB1) DIGITAL9
+T 6350 4400 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 4000 6400 4000 1 0 0
+{
+T 6500 4050 5 8 1 1 0 0 1
+pinnumber=23
+T 6500 3950 5 8 0 1 0 2 1
+pinseq=23
+T 6350 4000 9 8 1 1 0 6 1
+pinlabel=(PB0) DIGITAL8
+T 6350 4000 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 3600 6400 3600 1 0 0
+{
+T 6500 3650 5 8 1 1 0 0 1
+pinnumber=22
+T 6500 3550 5 8 0 1 0 2 1
+pinseq=22
+T 6350 3600 9 8 1 1 0 6 1
+pinlabel=(PD7) DIGITAL7
+T 6350 3600 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 3200 6400 3200 1 0 0
+{
+T 6500 3250 5 8 1 1 0 0 1
+pinnumber=21
+T 6500 3150 5 8 0 1 0 2 1
+pinseq=21
+T 6350 3200 9 8 1 1 0 6 1
+pinlabel=(PD6) DIGITAL6
+T 6350 3200 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 2800 6400 2800 1 0 0
+{
+T 6500 2850 5 8 1 1 0 0 1
+pinnumber=20
+T 6500 2750 5 8 0 1 0 2 1
+pinseq=20
+T 6350 2800 9 8 1 1 0 6 1
+pinlabel=(PD5) DIGITAL5
+T 6350 2800 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 2400 6400 2400 1 0 0
+{
+T 6500 2450 5 8 1 1 0 0 1
+pinnumber=19
+T 6500 2350 5 8 0 1 0 2 1
+pinseq=19
+T 6350 2400 9 8 1 1 0 6 1
+pinlabel=(PD4) DIGITAL4
+T 6350 2400 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 2000 6400 2000 1 0 0
+{
+T 6500 2050 5 8 1 1 0 0 1
+pinnumber=18
+T 6500 1950 5 8 0 1 0 2 1
+pinseq=18
+T 6350 2000 9 8 1 1 0 6 1
+pinlabel=(PD3) DIGITAL3
+T 6350 2000 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 1600 6400 1600 1 0 0
+{
+T 6500 1650 5 8 1 1 0 0 1
+pinnumber=17
+T 6500 1550 5 8 0 1 0 2 1
+pinseq=17
+T 6350 1600 9 8 1 1 0 6 1
+pinlabel=(PD2) DIGITAL2
+T 6350 1600 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 1200 6400 1200 1 0 0
+{
+T 6500 1250 5 8 1 1 0 0 1
+pinnumber=16
+T 6500 1150 5 8 0 1 0 2 1
+pinseq=17
+T 6350 1200 9 8 1 1 0 6 1
+pinlabel=(PD1) DIGITAL1
+T 6350 1200 5 8 0 1 0 8 1
+pintype=io
+}
+P 6700 800 6400 800 1 0 0
+{
+T 6500 850 5 8 1 1 0 0 1
+pinnumber=15
+T 6500 750 5 8 0 1 0 2 1
+pinseq=15
+T 6350 800 9 8 1 1 0 6 1
+pinlabel=(PD0) DIGITAL0
+T 6350 800 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 100 2400 400 1 0 0
+{
+T 2350 300 5 8 1 1 90 6 1
+pinnumber=33
+T 2450 300 5 8 0 1 90 8 1
+pinseq=33
+T 2400 450 9 8 1 1 90 0 1
+pinlabel=ICSP_PB4
+T 2400 450 5 8 0 1 90 2 1
+pintype=oc
+}
+P 2800 100 2800 400 1 0 0
+{
+T 2750 300 5 8 1 1 90 6 1
+pinnumber=34
+T 2850 300 5 8 0 1 90 8 1
+pinseq=34
+T 2800 450 9 8 1 1 90 0 1
+pinlabel=ICSP_5V
+T 2800 450 5 8 0 1 90 2 1
+pintype=oc
+}
+P 3200 100 3200 400 1 0 0
+{
+T 3150 300 5 8 1 1 90 6 1
+pinnumber=35
+T 3250 300 5 8 0 1 90 8 1
+pinseq=35
+T 3200 450 9 8 1 1 90 0 1
+pinlabel=ICSP_PB5
+T 3200 450 5 8 0 1 90 2 1
+pintype=oc
+}
+P 3600 100 3600 400 1 0 0
+{
+T 3550 300 5 8 1 1 90 6 1
+pinnumber=36
+T 3650 300 5 8 0 1 90 8 1
+pinseq=36
+T 3600 450 9 8 1 1 90 0 1
+pinlabel=ICSP_PB3
+T 3600 450 5 8 0 1 90 2 1
+pintype=oc
+}
+P 4000 100 4000 400 1 0 0
+{
+T 3950 300 5 8 1 1 90 6 1
+pinnumber=37
+T 4050 300 5 8 0 1 90 8 1
+pinseq=37
+T 4000 450 9 8 1 1 90 0 1
+pinlabel=ICSP_RESET
+T 4000 450 5 8 0 1 90 2 1
+pintype=oc
+}
+P 4400 100 4400 400 1 0 0
+{
+T 4350 300 5 8 1 1 90 6 1
+pinnumber=38
+T 4450 300 5 8 0 1 90 8 1
+pinseq=38
+T 4400 450 9 8 1 1 90 0 1
+pinlabel=ICSP_GND
+T 4400 450 5 8 0 1 90 2 1
+pintype=oc
+}
+B 400 400 6000 7600 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 6400 8100 8 10 1 1 0 6 1
+refdes=U?
+T 400 8100 9 10 1 0 0 0 1
+ARDUINO UNO R3
+T 400 8300 5 10 0 0 0 0 1
+device=ARDUINO UNO R3
+T 400 8500 5 10 0 0 0 0 1
+footprint=arduino_uno_rev3_fpt
+T 400 8700 5 10 0 0 0 0 1
+author=Britton Kerin
+T 400 8900 5 10 0 0 0 0 1
+documentation=Mouser part number 782-A000066
+T 400 9100 5 10 0 0 0 0 1
+description=free ATMEGA328P-PU development board
+T 400 9300 5 10 0 0 0 0 1
+numslots=0
+T 400 9500 5 10 0 0 0 0 1
+comment=All ICSP pins are connected to some other other pins.
+T 400 9700 5 10 0 0 0 0 1
+comment=Parens indicate the connected ATMega328P pin.
+T 400 9900 5 10 0 0 0 0 1
+comment=Parens *do not* indicate an *exclusive* ATMega328P pin connection.
+T 400 10100 5 10 0 0 0 0 1
+connect=A number of pins are electrically connection to each other.

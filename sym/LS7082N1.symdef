@@ -1,0 +1,25 @@
+[labels]
+    LS7082N1
+    refdes=U?
+!   footprint=SO14
+
+[top]
+    8 x2
+    10 x4
+    
+    1 VDD
+    
+[left]
+    5 A
+    6 B
+    2 INDX
+
+[right]
+    14 ! RST
+    13 ! UP
+    12 ! DOWN
+
+[bottom]
+    3 RBIAS
+
+    4 VSS

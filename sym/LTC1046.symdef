@@ -1,0 +1,17 @@
+[labels]
+    LTC1046
+    refdes=U?
+!   footprint=SO8
+     
+[left]
+    1 BOOST
+    2 CAP+
+    3 GND
+    4 CAP-
+
+[right]
+    8 V+
+    7 OSC
+    6 LV
+    5 VOUT
+

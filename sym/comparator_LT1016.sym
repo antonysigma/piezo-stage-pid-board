@@ -1,0 +1,113 @@
+v 20140308 2
+T -395 2300 5 8 0 0 0 0 1
+device=comparator
+T -395 2100 5 8 0 0 0 0 1
+description=ultrafast comparator LT1016
+T -420 1900 5 8 0 0 0 0 1
+documentation=http://cds.linear.com/docs/Datasheet/1719fa.pdf
+T -420 1700 5 8 0 0 0 0 1
+author=Tobias Vockerodt vockerodt@iqo.uni-hannover.de
+T -420 1500 5 8 0 0 0 0 1
+dist-license=GPL 3, see http://www.gnu.org/licenses/gpl-3.0.txt
+T -420 1300 5 8 0 0 0 0 1
+use-license=free, no restrictions
+T -420 1100 5 8 0 0 0 0 1
+numslots=0
+T 500 960 8 10 1 1 0 0 1
+refdes=U?
+T 380 500 8 10 0 1 0 0 1
+value=LT1719
+T 380 300 8 8 0 1 0 0 1
+footprint=SO8
+P 0 300 100 300 1 0 0
+{
+T 0 370 5 8 1 1 0 0 1
+pinnumber=3
+T 0 370 5 8 0 1 0 0 1
+pinseq=3
+T 150 340 9 16 1 1 0 0 1
+pinlabel=-
+T 0 220 5 8 0 1 0 0 1
+pintype=in
+}
+P 0 700 100 700 1 0 0
+{
+T 0 770 5 8 0 1 0 0 1
+pinnumber=2
+T 0 770 5 8 1 1 0 0 1
+pinseq=2
+T 110 520 9 16 1 1 0 0 1
+pinlabel=+
+T 0 620 5 8 0 1 0 0 1
+pintype=in
+}
+P 900 500 1000 500 1 0 1
+{
+T 925 570 5 8 1 1 0 0 1
+pinnumber=7
+T 925 570 5 8 0 1 0 0 1
+pinseq=7
+T 1000 570 5 8 0 1 0 0 1
+pintype=out
+T 825 370 9 8 0 1 0 0 1
+pinlabel=Vout
+}
+P 300 0 300 200 1 0 0
+{
+T 300 120 5 8 1 1 0 0 1
+pinnumber=4
+T 360 100 5 8 0 1 0 0 1
+pinseq=4
+T 160 250 3 6 1 1 0 0 1
+pinlabel=-Vs
+T 450 100 5 8 0 1 0 0 1
+pintype=pwr
+}
+P 700 300 700 400 1 0 0
+{
+T 805 270 5 8 1 1 0 6 1
+pinnumber=5
+T 1030 400 5 8 0 1 180 0 1
+pinseq=5
+T 765 540 3 6 1 1 180 0 1
+pinlabel=Latch
+T 1330 350 5 8 0 1 180 0 1
+pintype=pas
+}
+P 500 100 500 300 1 0 0
+{
+T 510 200 5 8 1 1 0 0 1
+pinnumber=6
+T 710 600 5 8 0 1 0 0 1
+pinseq=6
+T 330 350 3 6 1 1 0 0 1
+pinlabel=GND
+T 610 750 5 8 0 1 0 0 1
+pintype=pas
+}
+L 100 920 100 120 3 0 0 0 -1 -1
+L 100 920 900 500 3 0 0 0 -1 -1
+L 100 120 900 500 3 0 0 0 -1 -1
+P 1000 800 500 800 1 0 0
+{
+T 610 800 5 8 1 1 0 0 1
+pinnumber=8
+T 610 760 5 8 0 1 0 0 1
+pinseq=8
+T 350 630 3 6 0 1 0 0 1
+pinlabel=ComplVout
+T 510 910 5 8 0 1 0 0 1
+pintype=out
+}
+P 300 1000 300 825 1 0 0
+{
+T 310 840 5 8 1 1 0 0 1
+pinnumber=1
+T 310 840 5 8 0 1 0 0 1
+pinseq=1
+T 150 730 3 6 1 1 0 0 1
+pinlabel=+Vs
+T 110 990 5 8 0 1 0 0 1
+pintype=pwr
+}
+V 470 785 40 6 0 1 0 -1 -1 0 -1 -1 -1 -1 -1

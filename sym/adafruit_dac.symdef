@@ -1,0 +1,21 @@
+# MCP4725
+# Adafruit 12bit DAC breakout board
+
+[labels]
+
+MCP4725
+refdes=U?
+! footprint=JUMPER6
+! net=Vdd:1
+! net=Vss:2
+
+[left]
+
+4 SDA
+3 SCL
+
+5 A0
+
+[right]
+
+6 VOUT

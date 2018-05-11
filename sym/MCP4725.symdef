@@ -1,0 +1,19 @@
+[labels]
+    MCP4725
+    refdes=U?
+!   footprint=SOT23
+
+[top]
+    8 VDD
+    
+[left]
+    1 NO
+    3 NC
+
+    7 IN
+
+[right]
+    2 COM
+
+[bottom]
+    4 VSS
