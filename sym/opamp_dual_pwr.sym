@@ -1,4 +1,4 @@
-v 20110619 2
+v 20130925 2
 T 100 100 0 1 0 0 0 0 1
 gedasymbols::url=http://www.gedasymbols.org/user/kai_martin_knaak/symbols/analog/amplifiers/opamp_dual_pwr.sym
 T 200 2200 5 8 0 0 0 0 1
@@ -11,13 +11,9 @@ T 200 1400 5 8 0 0 0 0 1
 use-license=free, no restrictions
 T 200 2000 5 8 0 0 0 0 1
 symversion=1.0
-T 650 550 8 10 1 1 0 0 1
+T 250 350 8 10 1 1 0 0 1
 refdes=U?
 B 0 100 600 700 3 10 0 0 -1 -1 0 -1 -1 -1 -1 -1
-T 50 350 9 8 1 0 0 0 1
-opamp
-T 50 450 9 8 1 0 0 0 1
-dual
 P 300 900 300 800 1 0 0
 {
 T 250 850 5 8 0 1 0 6 1

@@ -1,4 +1,4 @@
-v 20111231 2
+v 20130925 2
 T 100 100 0 1 0 0 0 0 1
 gedasymbols::url=http://www.gedasymbols.org/user/kai_martin_knaak/symbols/analog/amplifiers/opamp_dual.sym
 T 300 3500 5 8 0 0 0 0 1
@@ -17,7 +17,7 @@ T 300 1600 5 8 0 0 0 0 1
 slotdef=2:7,6,5
 T 1100 600 8 8 1 0 0 0 1
 slot=1
-T 700 1000 8 10 1 1 0 0 1
+T 400 700 8 10 1 1 0 0 1
 refdes=U?
 T 700 800 8 10 1 1 0 0 1
 value=TL082
@@ -70,5 +70,3 @@ T 300 2700 5 8 0 0 0 0 1
 symversion=1.1
 T 300 3100 5 8 0 0 0 0 1
 footprints=SO8, DIP8
-T 450 400 9 10 1 1 0 4 1
-component-label=dual
