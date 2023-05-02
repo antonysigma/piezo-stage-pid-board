@@ -1,0 +1,9 @@
+[submodule "firmware/libraries/Encoder"]
+	path = firmware/libraries/Encoder
+	url = https://github.com/PaulStoffregen/Encoder.git
+[submodule "firmware/libraries/Adafruit_MCP4725"]
+	path = firmware/libraries/Adafruit_MCP4725
+	url = https://github.com/adafruit/Adafruit_MCP4725.git
+[submodule "firmware/libraries/Adafruit_BusIO"]
+	path = firmware/libraries/Adafruit_BusIO
+	url = https://github.com/adafruit/Adafruit_BusIO.git
