@@ -62,7 +62,7 @@ windup, where a large position overshoot is observed. Integral windup happens
 when the desired Z-position is set above or below 50 micrometer of the current
 position. I mitigated the issue with a slew-rate limiter between the desired
 position input and the PID input, effectively converting a step motion request
-to a ramp motion request with a max Z-velocity of 2 mm/s.
+to a ramp motion request with a max Z-velocity of 10 mm/s.
 
 **Differential TTL to single TTL conversion.** The linear encoder measures the
 relative position of the Z-stage. It outputs the quadrature signal in
