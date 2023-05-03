@@ -19,7 +19,7 @@ Technical specifications:
 ## Why I made my own board
 
 The board is primarily used to actuate the Piezo-flexure nano-positioning Z-axis stage
-at a step size of around 10 micrometer; full travel range of 0~250
+at a step size of 5 micrometer; full travel range of 0~250
 micrometer, and a close-loop settle time of 50 millisecond. The 50 millisecond
 settle time requirement originates from the need to avoid motion blur in the
 96-camera imaging light path; the stage must settle completely before the
@@ -57,13 +57,6 @@ adjust the input bias on the non-inverting input with a precision voltage source
 (TL431). Otherwise, I would have to add numerous voltage follower
 sub-circuits with more OpAmp ICs, which can introduce more failure modes.
 
-What the signal conditioning filter fails to suppress is the PID integral
-windup, where a large position overshoot is observed. Integral windup happens
-when the desired Z-position is set above or below 50 micrometer of the current
-position. I mitigated the issue with a slew-rate limiter between the desired
-position input and the PID input, effectively converting a step motion request
-to a ramp motion request with a max Z-velocity of 10 mm/s.
-
 **Differential TTL to single TTL conversion.** The linear encoder measures the
 relative position of the Z-stage. It outputs the quadrature signal in
 differential TTL format, compatible to the RS485 protocol. The MCU can decode the
@@ -93,6 +86,16 @@ Z-position in micrometer. To further stabilize the PID position control, I added
 a first-order IIR filter as the software signal pre-conditioning filter. The IIR
 filter effectively adds an additional pole in the open loop response to increase
 the phase margin at 250Hz.
+
+**Software slew rate limiter of input position signal** Whenever the user
+requests a large Z-axis displacment, the PID loop suffers from integral windup.
+Integral windup happens when the desired Z-position is set above or below 50
+micrometer of the current position. I mitigated the issue with a slew-rate
+limiter between the desired position input and the PID input, effectively
+converting a step motion request to a ramp motion request with a max Z-velocity
+of 10 mm/s.
+
+![](ramp-response-50micron.png)
 
 ## PCB
 
