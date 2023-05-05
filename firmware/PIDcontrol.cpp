@@ -28,17 +28,26 @@ clamp(const T x, const T vmin, const T vmax) {
 
 // Events
 struct trigger {
-    float error = 0.0f;
+    float value = 0.0f;
 };
 
 // Guards
 constexpr auto errorWithinThreshold = [](const trigger t) -> bool {
-    return abs(t.error) <= thresh;
+    return abs(t.value) <= thresh;
 };
 
+constexpr auto systemInputExceedLimit = [](const trigger t) -> bool {
+    return t.value <= 0 || t.value >= systemInputmax;
+};
+
+// Actions
 constexpr auto setupLock = []() { pinMode(lockLED, OUTPUT); };
 constexpr auto showLock = []() { digitalWrite(lockLED, HIGH); };
 constexpr auto showUnlock = []() { digitalWrite(lockLED, LOW); };
+
+constexpr auto setupAlarm = []() { pinMode(alarmLED, OUTPUT); };
+constexpr auto showAlarm = []() { digitalWrite(alarmLED, HIGH); };
+constexpr auto silentAlarm = []() { digitalWrite(alarmLED, LOW); };
 
 struct LockState {
     // Debounce switch: change state only after 50ms
@@ -64,7 +73,21 @@ struct LockState {
     }
 };
 
+struct AlarmState {
+    auto operator()() const {
+        using namespace boost::sml;
+        return make_transition_table(
+            // clang-format off
+            *"init"_s / setupAlarm = "monitoring"_s,
+            "monitoring"_s + event<trigger>[ systemInputExceedLimit ] / showAlarm = "monitoring"_s,
+            "monitoring"_s + event<trigger>[ not systemInputExceedLimit ] / silentAlarm = "monitoring"_s
+            // clang-format on
+        );
+    }
+};
+
 boost::sml::sm<LockState> lock_state_transition;
+boost::sml::sm<AlarmState> alarm_state_transition;
 
 }  // namespace
 
@@ -133,21 +156,14 @@ PID_control::update(unsigned long currentMicros) {
 
     // Prevent integral windup
     // Show alarm when system input limit is reached
-    if (new_u < 0) {
-        new_u = 0;
-        digitalWrite(alarmLED, HIGH);
-    } else if (new_u > systemInputmax) {
-        new_u = systemInputmax;
-        digitalWrite(alarmLED, HIGH);
-    } else
-        digitalWrite(alarmLED, LOW);
+    new_u = clamp(new_u, 0.0f, float(systemInputmax));
 
     // Apply another slew rate limiter
     u = 0.97 * u + 0.03 * new_u;
 
     // Apply system input, only when there is a significant change
     // Used to reduce i2c traffic
-    if (u - new_u > 1 || u - new_u < -1) dac->setVoltage((uint16_t)u, false);
+    if (u - new_u > 1 || u - new_u < -1) dac->setVoltage(static_cast<uint16_t>(u), false);
 
     // Update state variables
     x_actual[1] = x_actual[0];
@@ -156,4 +172,5 @@ PID_control::update(unsigned long currentMicros) {
 
     // Visualize the lock state with LEDs
     lock_state_transition.process_event(trigger{new_e});
+    alarm_state_transition.process_event(trigger{new_u});
 }
