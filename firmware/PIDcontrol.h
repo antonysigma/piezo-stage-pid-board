@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 class PID_control {
+   public:
     // Option to invert the system output.
     static constexpr bool INVERT_OUTPUT = true;
     static constexpr auto sign = INVERT_OUTPUT ? -1 : 1;
@@ -23,6 +24,7 @@ class PID_control {
     static constexpr float eMax = slewRatelimit * sampleTime * 1e-6f;  // Slew rate limit
     static constexpr uint16_t systemInputdefault = 3277;  // 4096U * 4 / 5;
 
+   private:
     int16_t x_desired = 0;    // desired output
     int16_t x_actual[2] = {0, 0};  // actual output
 
@@ -33,8 +35,6 @@ class PID_control {
 
     Adafruit_MCP4725* dac;
     Encoder* encoder;
-
-    unsigned lockTimer;
 
    public:
     PID_control(Adafruit_MCP4725* _dac, Encoder* _encoder);

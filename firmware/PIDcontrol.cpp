@@ -1,15 +1,74 @@
-#include "PIDcontrol.h"
+// This header must come first
+#include "boost/sml.hpp"
 
+// Include the rest of the headers
 #include <Arduino.h>
 
+#include "PIDcontrol.h"
 #include "config.h"
 
 namespace {
+
+constexpr float thresh = 1.0f;
 constexpr uint16_t systemInputmax = 4095;
+
+template <typename T>
+constexpr T
+clamp(const T x, const T vmin, const T vmax) {
+    if (x < vmin) {
+        return vmin;
+    }
+
+    if (x > vmax) {
+        return vmax;
+    }
+
+    return x;
+}
+
+// Events
+struct trigger {
+    float error = 0.0f;
+};
+
+// Guards
+constexpr auto errorWithinThreshold = [](const trigger t) -> bool {
+    return abs(t.error) <= thresh;
+};
+
+constexpr auto setupLock = []() { pinMode(lockLED, OUTPUT); };
+constexpr auto showLock = []() { digitalWrite(lockLED, HIGH); };
+constexpr auto showUnlock = []() { digitalWrite(lockLED, LOW); };
+
+struct LockState {
+    // Debounce switch: change state only after 50ms
+    static constexpr uint8_t max_debounce = 5000UL / PID_control::sampleTime;
+    uint8_t n_debounce = 0;
+
+    auto operator()() {
+        using namespace boost::sml;
+
+        // Actions
+        const auto debounceReady = [&]() -> bool { return n_debounce >= max_debounce; };
+        const auto debounce = [&]() { n_debounce++; };
+        const auto reset = [&]() { n_debounce = 0; };
+
+        return make_transition_table(
+            // clang-format off
+            *"init"_s / setupLock = "tracking"_s,
+            "tracking"_s + event<trigger>[errorWithinThreshold and not debounceReady] / debounce = "tracking"_s,
+            "tracking"_s + event<trigger>[errorWithinThreshold and debounceReady] / showLock = "locked"_s,
+            "locked"_s + event<trigger>[not errorWithinThreshold] / (showUnlock, reset) = "tracking"_s
+            // clang-format on
+        );
+    }
+};
+
+boost::sml::sm<LockState> lock_state_transition;
+
 }  // namespace
 
 PID_control::PID_control(Adafruit_MCP4725* _dac, Encoder* _encoder) : dac(_dac), encoder(_encoder) {
-    pinMode(lockLED, OUTPUT);
     pinMode(alarmLED, OUTPUT);
     pinMode(encoder_IDX, INPUT_PULLUP);
 
@@ -60,14 +119,8 @@ PID_control::update(unsigned long currentMicros) {
     previousMicros = currentMicros;
 
     int16_t new_x_actual = encoder->read();
-    float new_e = float(x_desired) - new_x_actual;
-    bool lock_flag = (new_e <= 1 && new_e >= -1);
-
-    // Slew rate limiter
-    if (new_e > eMax)
-        new_e = eMax;
-    else if (new_e < -eMax)
-        new_e = -eMax;
+    // Compute system input error with slew rate limiter
+    const float new_e = clamp(float(x_desired) - new_x_actual, -eMax, eMax);
 
     // Apply PI gain
     float new_u = u;
@@ -101,13 +154,6 @@ PID_control::update(unsigned long currentMicros) {
     x_actual[0] = new_x_actual;
     e = new_e;
 
-    // Show lock signal
-    // Debounce switch: change state only after 50ms
-    if (lock_flag && lockTimer > 50000UL)
-        digitalWrite(lockLED, HIGH);
-    else if (!lock_flag) {
-        lockTimer = 0;
-        digitalWrite(lockLED, LOW);
-    } else
-        lockTimer += sampleTime;
+    // Visualize the lock state with LEDs
+    lock_state_transition.process_event(trigger{new_e});
 }
