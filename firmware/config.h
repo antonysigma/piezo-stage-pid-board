@@ -10,3 +10,6 @@ constexpr auto lockLED = 6;
 constexpr auto alarmLED = 7;
 
 constexpr uint16_t dac_offset = 3277;  // 4096L / 5Volt * 4Volt
+
+constexpr uint16_t systemInputmax = 4095;
+constexpr auto sampleTime = 500UL;

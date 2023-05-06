@@ -1,9 +1,9 @@
-#ifndef __PIDcontrol_H_
-#define __PIDcontrol_H__
-
+#pragma once
 #include <Adafruit_MCP4725.h>
 #include <Encoder.h>
 #include <stdint.h>
+
+#include "config.h"
 
 class PID_control {
    public:
@@ -11,10 +11,9 @@ class PID_control {
     static constexpr bool INVERT_OUTPUT = true;
     static constexpr auto sign = INVERT_OUTPUT ? -1 : 1;
 
-    static constexpr unsigned long sampleTime = 500;  // Sampling interval
     static constexpr float Kp = 2e1f * sign;          // Proportional gain
-    static constexpr float Ti = 1e-2f;                // Integral gain
-    static constexpr float Td = 5e-4f;                // Derivative gain
+    static constexpr float Ti = 1e-2f;                // Integral time / second
+    static constexpr float Td = 5e-4f;                // Derivative time / second
 
     // Slew rate limiter: limit changes to 50um / 5ms = 20 count / ms
     static constexpr float slewRatelimit = 20e3f;
@@ -48,4 +47,3 @@ class PID_control {
     void update(unsigned long currentMicros);
 };
 
-#endif

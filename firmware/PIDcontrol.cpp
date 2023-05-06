@@ -1,98 +1,15 @@
-// This header must come first
-#include "boost/sml.hpp"
+#include "alarm-state-logic.hpp"
+#include "lock-state-logic.hpp"
+
+#include "PIDcontrol.h"
 
 // Include the rest of the headers
 #include <Arduino.h>
 
-#include "PIDcontrol.h"
 #include "config.h"
-
-namespace {
-
-constexpr float thresh = 1.0f;
-constexpr uint16_t systemInputmax = 4095;
-
-template <typename T>
-constexpr T
-clamp(const T x, const T vmin, const T vmax) {
-    if (x < vmin) {
-        return vmin;
-    }
-
-    if (x > vmax) {
-        return vmax;
-    }
-
-    return x;
-}
-
-// Events
-struct trigger {
-    float value = 0.0f;
-};
-
-// Guards
-constexpr auto errorWithinThreshold = [](const trigger t) -> bool {
-    return abs(t.value) <= thresh;
-};
-
-constexpr auto systemInputExceedLimit = [](const trigger t) -> bool {
-    return t.value <= 0 || t.value >= systemInputmax;
-};
-
-// Actions
-constexpr auto setupLock = []() { pinMode(lockLED, OUTPUT); };
-constexpr auto showLock = []() { digitalWrite(lockLED, HIGH); };
-constexpr auto showUnlock = []() { digitalWrite(lockLED, LOW); };
-
-constexpr auto setupAlarm = []() { pinMode(alarmLED, OUTPUT); };
-constexpr auto showAlarm = []() { digitalWrite(alarmLED, HIGH); };
-constexpr auto silentAlarm = []() { digitalWrite(alarmLED, LOW); };
-
-struct LockState {
-    // Debounce switch: change state only after 50ms
-    static constexpr uint8_t max_debounce = 5000UL / PID_control::sampleTime;
-    uint8_t n_debounce = 0;
-
-    auto operator()() {
-        using namespace boost::sml;
-
-        // Actions
-        const auto debounceReady = [&]() -> bool { return n_debounce >= max_debounce; };
-        const auto debounce = [&]() { n_debounce++; };
-        const auto reset = [&]() { n_debounce = 0; };
-
-        return make_transition_table(
-            // clang-format off
-            *"init"_s / setupLock = "tracking"_s,
-            "tracking"_s + event<trigger>[errorWithinThreshold and not debounceReady] / debounce = "tracking"_s,
-            "tracking"_s + event<trigger>[errorWithinThreshold and debounceReady] / showLock = "locked"_s,
-            "locked"_s + event<trigger>[not errorWithinThreshold] / (showUnlock, reset) = "tracking"_s
-            // clang-format on
-        );
-    }
-};
-
-struct AlarmState {
-    auto operator()() const {
-        using namespace boost::sml;
-        return make_transition_table(
-            // clang-format off
-            *"init"_s / setupAlarm = "monitoring"_s,
-            "monitoring"_s + event<trigger>[ systemInputExceedLimit ] / showAlarm = "monitoring"_s,
-            "monitoring"_s + event<trigger>[ not systemInputExceedLimit ] / silentAlarm = "monitoring"_s
-            // clang-format on
-        );
-    }
-};
-
-boost::sml::sm<LockState> lock_state_transition;
-boost::sml::sm<AlarmState> alarm_state_transition;
-
-}  // namespace
+#include "utils.hpp"
 
 PID_control::PID_control(Adafruit_MCP4725* _dac, Encoder* _encoder) : dac(_dac), encoder(_encoder) {
-    pinMode(alarmLED, OUTPUT);
     pinMode(encoder_IDX, INPUT_PULLUP);
 
     previousMicros = micros();
@@ -137,11 +54,18 @@ PID_control::getSystemoutput() const {
 }
 void
 PID_control::update(unsigned long currentMicros) {
+    using utils::clamp;
     if (currentMicros - previousMicros < sampleTime) return;
+
+    using dispatch_t = boost::sml::dispatch<boost::sml::back::policies::branch_stm>;
+    using AlarmState = state_machine::alarm::AlarmState;
+    using LockState = state_machine::lock::LockState;
+    static boost::sml::sm<AlarmState, dispatch_t> alarm_state_machine;
+    static boost::sml::sm<LockState, dispatch_t> lock_state_transition;
 
     previousMicros = currentMicros;
 
-    int16_t new_x_actual = encoder->read();
+    const int16_t new_x_actual = encoder->read();
     // Compute system input error with slew rate limiter
     const float new_e = clamp(float(x_desired) - new_x_actual, -eMax, eMax);
 
@@ -159,7 +83,7 @@ PID_control::update(unsigned long currentMicros) {
     new_u = clamp(new_u, 0.0f, float(systemInputmax));
 
     // Apply another slew rate limiter
-    u = 0.97 * u + 0.03 * new_u;
+    u = 0.97f * u + 0.03f * new_u;
 
     // Apply system input, only when there is a significant change
     // Used to reduce i2c traffic
@@ -171,6 +95,8 @@ PID_control::update(unsigned long currentMicros) {
     e = new_e;
 
     // Visualize the lock state with LEDs
-    lock_state_transition.process_event(trigger{new_e});
-    alarm_state_transition.process_event(trigger{new_u});
+    using state_machine::alarm::system_input_t;
+    using state_machine::lock::system_error_t;
+    lock_state_transition.process_event(system_error_t{new_e});
+    alarm_state_machine.process_event(system_input_t{new_u});
 }
