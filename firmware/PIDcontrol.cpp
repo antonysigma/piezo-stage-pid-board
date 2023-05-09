@@ -9,17 +9,17 @@
 #include "config.h"
 #include "utils.hpp"
 
-PID_control::PID_control(Adafruit_MCP4725* _dac, Encoder* _encoder) : dac(_dac), encoder(_encoder) {
+PIDControl::PIDControl(Adafruit_MCP4725* _dac, Encoder* _encoder) : dac(_dac), encoder(_encoder) {
     pinMode(encoder_IDX, INPUT_PULLUP);
 
     previousMicros = micros();
 }
 
 void
-PID_control::begin() {
+PIDControl::begin() {
     delay(200);
 
-    // TODO: limit the slew rate
+    // TODO(Antony): limit the slew rate right after power cycle.
     uint16_t position = systemInputdefault + 200;
     dac->setVoltage(position, false);
 
@@ -27,7 +27,7 @@ PID_control::begin() {
 
     // Scan for index signal
     for (; position > systemInputdefault - 200; position--) {
-        // TODO: Limit slew rate to 1 count / ms
+        // TODO(Antony): Limit the slew rate to 1 count / ms
         dac->setVoltage(position, false);
         delay(10);
 
@@ -38,22 +38,22 @@ PID_control::begin() {
 }
 
 void
-PID_control::setSystemoutput(int16_t value) {
+PIDControl::setSystemoutput(int16_t value) {
     // Gain = 2 count / micrometer
     x_desired = value * 2;
 }
 
 uint16_t
-PID_control::getSysteminput() const {
+PIDControl::getSysteminput() const {
     return u;
 }
 
 int16_t
-PID_control::getSystemoutput() const {
+PIDControl::getSystemoutput() const {
     return x_actual[0];
 }
 void
-PID_control::update(unsigned long currentMicros) {
+PIDControl::update(uint32_t currentMicros) {
     using utils::clamp;
     if (currentMicros - previousMicros < sampleTime) return;
 
@@ -76,7 +76,7 @@ PID_control::update(unsigned long currentMicros) {
     new_u += Ki_times_DeltaT * new_e;
 
     // Apply D gain based on system output only
-    new_u += Kd_over_DeltaT * (new_x_actual - x_actual[0] * 2 + x_actual[1]);
+    new_u += Kd_over_DeltaT * (float(new_x_actual) - x_actual[0] * 2.0f + x_actual[1]);
 
     // Prevent integral windup
     // Show alarm when system input limit is reached

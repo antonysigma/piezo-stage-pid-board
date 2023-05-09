@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-class PID_control {
+class PIDControl {
    public:
     // Option to invert the system output.
     static constexpr bool INVERT_OUTPUT = true;
@@ -30,20 +30,20 @@ class PID_control {
     float e = 0;  // Previous error value
     float u = systemInputdefault;  // Previous control input
 
-    unsigned long previousMicros;  // will store last time LED was updated
+    uint32_t previousMicros;  // will store last time LED was updated
 
     Adafruit_MCP4725* dac;
     Encoder* encoder;
 
    public:
-    PID_control(Adafruit_MCP4725* _dac, Encoder* _encoder);
+    PIDControl(Adafruit_MCP4725* _dac, Encoder* _encoder);
 
     void begin();
 
     void setSystemoutput(int16_t value);
-    uint16_t getSysteminput() const;
-    int16_t getSystemoutput() const;
+    [[nodiscard]] uint16_t getSysteminput() const;
+    [[nodiscard]] int16_t getSystemoutput() const;
 
-    void update(unsigned long currentMicros);
+    void update(uint32_t currentMicros);
 };
 

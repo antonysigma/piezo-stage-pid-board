@@ -13,26 +13,27 @@
 
 namespace {
 volatile int16_t position = 0;
-volatile bool newPosition = false;
+volatile bool new_position = false;
 
 void
-testTriangleSignal(const unsigned long currentTime, PID_control& PID) {
-    static unsigned long previousTime = currentTime;
+testTriangleSignal(const uint32_t current_time, PIDControl* pid) {
+    static uint32_t previous_time = current_time;
     static int16_t counter = 0;
 
     // Monitor values every 1 second
-    if (currentTime - previousTime < 3000000L) return;
+    if (current_time - previous_time < 3000000L) return;
 
-    PID.setSystemoutput(counter);
+    pid->setSystemoutput(counter);
 
     // Step change of 50 micrometer
     // Range = -40 to 260
-    if (counter >= 250)
+    if (counter >= 250) {
         counter = -50;
-    else
+    } else {
         counter += 50;
+    }
 
-    previousTime = currentTime;
+    previous_time = current_time;
 }
 
 void
@@ -40,7 +41,7 @@ receiveEvent(int numBytes) {
     auto buffer = reinterpret_cast<volatile unsigned char*>(&position);
     buffer[0] = Wire.read();  // receive byte as a character
     buffer[1] = Wire.read();
-    newPosition = true;
+    new_position = true;
 }
 
 }  // namespace
@@ -55,10 +56,10 @@ operator delete(void* ptr, unsigned int) {
 int
 main() {
     Adafruit_MCP4725 dac;
-    Encoder myEnc(encoder_A, encoder_B);
+    Encoder my_enc(encoder_A, encoder_B);
 
     // Update PID every 5 millisecond
-    PID_control PID(&dac, &myEnc);
+    PIDControl pid(&dac, &my_enc);
 
     Serial.begin(115200);
     Serial.println(F("Hello!"));
@@ -72,20 +73,20 @@ main() {
     dac.begin(DAC_ADDR, &Wire);
     Wire.onReceive(receiveEvent);
 
-    // TODO: Find zero position
+    // TODO(Antony): Find zero position
     Serial.println(F("Resetting encoder"));
-    PID.begin();
+    pid.begin();
 
     for (;;) {
-        unsigned long currentTime = micros();
+        const uint32_t current_time = micros();
 
-        PID.update(currentTime);
+        pid.update(current_time);
 
-        if (newPosition) {
+        if (new_position) {
             using utils::clamp;
             // Serial.println(position);
-            PID.setSystemoutput(clamp(position, -50, 250));
-            newPosition = false;
+            pid.setSystemoutput(clamp(position, -50, 250));
+            new_position = false;
         }
     }
 }

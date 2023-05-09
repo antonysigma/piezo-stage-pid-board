@@ -14,7 +14,7 @@ ARDUINO_LIBS = \
 BOARD_TAG = uno
 MONITOR_PORT=/dev/ttyUSB0
 OPTIMIZATION_LEVEL=3
-CXXFLAGS_STD = -std=c++14 \
+CXXFLAGS_STD = -std=c++17 \
 	-fno-threadsafe-statics \
 	-flto \
 	-fno-rtti \
