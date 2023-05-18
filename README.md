@@ -40,10 +40,10 @@ the R&D effort was spent on the DAC signal conditioning OpAmp filter design, as
 shown in the schmatic drawing. The single-rail DAC
 [MCP4725](https://www.adafruit.com/product/935) is capable of a fast output with
 a high dynamic range; essential for a high open-loop gain for responsive Z-stack
-scanning. However, the quantized DAC output signal also causes the damaging
+scanning. However, the DAC outputs a zero-order hold (ZOH) signal which can cause the damaging
 oscillation of the 40X piezo class-A amplifier and humming of the stage. So, it
 justifies interfacing the DAC and the power amplifier with a signal conditioning
-filter having the following properties:
+filter to smooth out the signal, having the following properties:
 
 * a sufficient phase margin at the stage natural frequency of 250Hz;
 * a full voltage swing between -1.0V and +4.0V;
@@ -56,6 +56,51 @@ negligable input bias current (down to nA). I also abused such a feature to
 adjust the input bias on the non-inverting input with a precision voltage source
 (TL431). Otherwise, I would have to add numerous voltage follower
 sub-circuits with more OpAmp ICs, which can introduce more failure modes.
+
+**Close-loop position feedback control mechanism** The piezo-flexure mechanism
+is known to resemble a spring-mass 2nd order system having an extremely small
+damping ratio (<= 0.0.1). So, the controller should actively attenuate the 250Hz
+oscillation in the z-axis stage. The need of the post-DAC signal conditioning
+filter also introduces instability at around the Nyquist bandwidth at around
+100Hz, so a sufficient phase margin should be increased as well.
+
+I ended up using a controller having 2 zeros and 3 poles in the continuous
+transfer function. As shown in the root locus plot of the s-plane below, the
+zero at $s=-800$ dampens the 100Hz poles of the OpAmp low pass filter. The two
+poles at $s=-400$ and $s=-500$ pulls the root loci of the 250Hz poles to the
+left half plane, attenuating the stage oscillation. 
+
+![Root locus plot](control_model/root_locus_ct.png)
+
+The same pole pair also moves the dominating close-loop poles to $j\omega <=
+500$ and damping ratio $\xi \leq 0.6$, so that the rise time can fall between
+5ms and 15ms. The remaining zero and pole near the origin ensures the stage
+settle time is within 50ms.
+
+![Step response](control_model/step_response_dt.png)
+
+In practice, the controller transfer function is mapped to the z-plane with
+bilinear transform. The z-terms are rearranged to resemble a PID contoller
+followed by a 1st order IIR filter. A PID controller code is used over the
+direct form in the MCU code because this is how most of the embedded engineers
+program the control systems. The theoretical transfer function of the controller is:
+
+$$
+\frac{U(z)}{E(z)} = 
+G \times
+\frac{z^{-1} + 1.0 z^{-1} + 1.7 z^{-2} + 1.7 z^{-3}}
+{1 - 0.889 z^{-1} - 0.111 z^{-2} - 2.4\times 10^{-17} z^{-3}}.
+$$
+
+Where G is the proportional gain suggested by the root locus plot.
+After tuning the coefficients on the physical
+system, the transfer function becomes:
+
+$$
+\frac{U(z)}{E(z)} = 
+G \times
+\frac{z^{-1} + 10 z^{-2} - 20 z^{-3}}{1 - z^{-1}}
+$$
 
 **Differential TTL to single TTL conversion.** The linear encoder measures the
 relative position of the Z-stage. It outputs the quadrature signal in
