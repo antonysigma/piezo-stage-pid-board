@@ -15,6 +15,23 @@ namespace {
 volatile int16_t position = 0;
 volatile bool new_position = false;
 
+/** Helper function to decode the fields in the SRAM as byte stream. */
+class bytes_t {
+   public:
+    using value_type = volatile uint8_t;
+    template <typename T>
+    constexpr bytes_t(volatile T& field)
+        : data{reinterpret_cast<value_type*>(&field)}, size{sizeof(T)} {}
+
+    constexpr value_type* begin() const { return data; }
+
+    constexpr value_type* end() const { return data + size; }
+
+   private:
+    value_type* data;
+    const size_t size;
+};
+
 void
 testTriangleSignal(const uint32_t current_time, PIDControl* pid) {
     static uint32_t previous_time = current_time;
@@ -38,9 +55,10 @@ testTriangleSignal(const uint32_t current_time, PIDControl* pid) {
 
 void
 receiveEvent(int numBytes) {
-    auto buffer = reinterpret_cast<volatile unsigned char*>(&position);
-    buffer[0] = Wire.read();  // receive byte as a character
-    buffer[1] = Wire.read();
+    for (auto& c : bytes_t{position}) {
+        c = Wire.read();
+    }
+
     new_position = true;
 }
 
