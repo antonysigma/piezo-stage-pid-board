@@ -88,8 +88,8 @@ program the control systems. The theoretical transfer function of the controller
 $$
 \frac{U(z)}{E(z)} = 
 G \times
-\frac{z^{-1} + 1.0 z^{-1} + 1.7 z^{-2} + 1.7 z^{-3}}
-{1 - 0.889 z^{-1} - 0.111 z^{-2} - 2.4\times 10^{-17} z^{-3}}.
+\frac{z^{-1} - 0.36 z^{-2} - 0.01 z^{-3}}
+{1 - 1.22 z^{-1} - 0.23 z^{-2} - 0.01 z^{-3}}.
 $$
 
 Where G is the proportional gain suggested by the root locus plot.

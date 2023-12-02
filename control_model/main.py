@@ -32,7 +32,7 @@ gain = 6e8
 sys2 = feedback(sys * gain)
 print(f'Close loop transfer function=\n{sys2}')
 
-discretized_controller = (controller * gain).sample(5e-3, 'bilinear')
+discretized_controller = (controller * gain).sample(5e-3, 'zoh')
 print(f'Discretized controller=\n{discretized_controller}')
 
 # Step response for the system
