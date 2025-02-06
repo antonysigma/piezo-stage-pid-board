@@ -15,7 +15,8 @@ struct interfaces {
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
         cib::exports<PIDControl>,                //
-        cib::exports<PositionLock>,
+        cib::exports<PositionLock>,              //
+        cib::exports<MoveTo>,
         cib::exports<Alarm>,       //
         cib::exports<PIDControl>,  //
         cib::exports<ResetPositionSensor>);
@@ -29,8 +30,7 @@ struct project {
         alarm::impl,                                 //
         command_parser::impl,                        //
         position_lock::impl,                         //
-        actuator::impl,                              //
-        linear_encoder::impl>;
+        linear_encoder::impl, actuator::impl>;
 };
 
 }  // namespace
@@ -41,7 +41,6 @@ main() {
     nexus.service<RuntimeInit>();
 
     for (;;) {
-        nexus.service<Alarm>(data_models::system_input_t{1.0f});
         nexus.service<MainLoop>();
     }
 

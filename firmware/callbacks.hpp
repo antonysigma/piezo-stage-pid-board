@@ -17,7 +17,7 @@ class PositionLock : public cib::callback_meta<data_models::system_error_t> {};
 class ResetPositionSensor : public cib::callback_meta<> {};
 
 // Actuators
-class Actuator : public cib::callback_meta<data_models::dac_command_t> {};
+class MoveTo : public cib::callback_meta<data_models::dac_command_t> {};
 
 // Controllers
 class PIDControl : public cib::callback_meta<data_models::position_t> {};
