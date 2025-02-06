@@ -6,7 +6,7 @@ namespace data_models {
 #pragma pack(push, 1)
 struct position_t {
     union {
-        uint16_t value;
+        int16_t value;
         uint8_t buffer[2];
     } data;
 };
