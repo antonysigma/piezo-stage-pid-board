@@ -2,13 +2,15 @@
 #include "components/alarm.hpp"
 #include "components/command_parser.hpp"
 #include "components/core.hpp"
+#include "components/position-lock.hpp"
 
 namespace {
-struct harness {
+struct interfaces {
     static constexpr auto config = cib::config(  //
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
-        cib::exports<PIDControl>,
+        cib::exports<PIDControl>,                //
+        cib::exports<PositionLock>,
         cib::exports<Alarm>  //
     );
 };
@@ -16,12 +18,14 @@ struct harness {
 using namespace components;
 struct project {
     static constexpr auto config = cib::components<  //
-        harness, core::init,                         //
+        interfaces,                                  //
+        core::init,                                  //
         alarm::init,
         alarm::impl,           //
         command_parser::init,  //
-        command_parser::impl   //
-        >;
+        command_parser::impl,  //
+        position_lock::init,   //
+        position_lock::impl>;
 };
 
 }  // namespace

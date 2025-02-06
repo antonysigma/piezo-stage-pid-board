@@ -18,10 +18,15 @@ namespace internal {
 volatile position_t position_command;
 volatile bool has_new_position{false};
 
+/** Callback of any i2c incoming signals.
+ *
+ * Decode the incoming two-byte message as 16-bit integer in little-endian
+ * representation.
+ */
 void
 receiveEvent(int numBytes) {
     auto& buffer = position_command.data.buffer;
-    buffer[0] = Wire.read();  // receive byte as a character
+    buffer[0] = Wire.read();
     buffer[1] = Wire.read();
     has_new_position = true;
 }
