@@ -9,7 +9,8 @@ constexpr auto encoder_IDX = 4;
 constexpr auto lockLED = 6;
 constexpr auto alarmLED = 7;
 
-constexpr uint16_t dac_offset = 3277;  // 4096L / 5Volt * 4Volt
+constexpr uint16_t dac_offset =
+    static_cast<uint16_t>(4096L * 4 / 5);  // 4096 steps / 5 Volt * 4.0 Volt;
 
 constexpr uint16_t systemInputmax = 4095;
 constexpr auto sampleTime = 500UL;

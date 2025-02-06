@@ -11,6 +11,7 @@ endif
 boost_sml_inc = subproject('boost-sml').get_variable('boost_sml_inc')
 cib_dep = subproject('compile-time-init-build').get_variable('cib_dep')
 arduinocore_proj = subproject('arduinocore-avr')
+adafruit_mcp4725_dep = subproject('Adafruit_MCP4725').get_variable('adafruit_mcp4725_dep')
 
 main_exe = executable('main',
     sources: [
@@ -24,5 +25,6 @@ main_exe = executable('main',
         # avr-ar does not support fat object files, why?
         arduinocore_proj.get_variable('arduinocore_dep'),
         arduinocore_proj.get_variable('arduinocore_wire_dep'),
+        adafruit_mcp4725_dep,
     ],
 )

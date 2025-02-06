@@ -1,4 +1,5 @@
 #include "callbacks.hpp"
+#include "components/actuator.hpp"
 #include "components/alarm.hpp"
 #include "components/command_parser.hpp"
 #include "components/core.hpp"
