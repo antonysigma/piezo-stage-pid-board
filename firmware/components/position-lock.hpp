@@ -67,14 +67,14 @@ boost::sml::sm<LockState, dispatch_t> position_lock_state_machine;
 static constexpr auto setup_pin =
     flow::action("PositionLockInit"_sc, []() { pinMode(lockLED, OUTPUT); });
 
-struct init {
-    constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
-        components::core::disable_usart >> setup_pin));
-};
-
 struct impl {
-    constexpr static auto config = cib::config(cib::extend<PositionLock>(
-        [](system_error_t event) { internal::position_lock_state_machine.process_event(event); }));
+    constexpr static auto config =
+        cib::config(cib::extend<RuntimeInit>(                           //
+                        components::core::disable_usart >> setup_pin),  //
+                    cib::extend<PositionLock>([](system_error_t event) {
+                        internal::position_lock_state_machine.process_event(event);
+                    })  //
+        );
 };
 
 }  // namespace position_lock

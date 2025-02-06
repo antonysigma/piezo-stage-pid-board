@@ -37,7 +37,7 @@ static constexpr auto disable_usart = flow::action("DisableUSART"_sc, []() {
 #endif
 });
 
-struct init {
+struct impl {
     constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
         timer0_init >> disable_usart));
 };

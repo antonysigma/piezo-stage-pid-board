@@ -48,15 +48,16 @@ static constexpr auto search_idx = flow::action("SearchIDX"_sc, []() {
     cib::service<ResetPositionSensor>();
 });
 
-struct init {
-    constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
-        components::command_parser::setup_i2c >> setup_idx_input >> setup_dac_connection >>
-        search_idx));
-};
+struct init {};
 
 struct impl {
-    constexpr static auto config = cib::config(cib::extend<Actuator>(
-        [](dac_command_t cmd) { internal::dac.setVoltage(cmd.value, false); }));
+    constexpr static auto config =
+        cib::config(cib::extend<RuntimeInit>(  //
+                        components::command_parser::setup_i2c >> setup_idx_input >>
+                        setup_dac_connection >> search_idx),  //
+                    cib::extend<Actuator>(
+                        [](dac_command_t cmd) { internal::dac.setVoltage(cmd.value, false); })  //
+        );
 };
 
 }  // namespace actuator

@@ -25,13 +25,11 @@ using namespace components;
 struct project {
     static constexpr auto config = cib::components<  //
         interfaces,                                  //
-        core::init,                                  //
-        alarm::init,
-        alarm::impl,           //
-        command_parser::init,  //
-        command_parser::impl,  //
-        position_lock::init,   //
-        position_lock::impl,   //
+        core::impl,                                  //
+        alarm::impl,                                 //
+        command_parser::impl,                        //
+        position_lock::impl,                         //
+        actuator::impl,                              //
         linear_encoder::impl>;
 };
 
