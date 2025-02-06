@@ -23,5 +23,6 @@ main_exe = executable('main',
         cib_dep,
         # avr-ar does not support fat object files, why?
         arduinocore_proj.get_variable('arduinocore_dep'),
+        arduinocore_proj.get_variable('arduinocore_wire_dep'),
     ],
 )

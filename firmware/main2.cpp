@@ -1,5 +1,6 @@
 #include "callbacks.hpp"
 #include "components/alarm.hpp"
+#include "components/command_parser.hpp"
 #include "components/core.hpp"
 
 namespace {
@@ -14,8 +15,8 @@ struct project {
     static constexpr auto config = cib::components<  //
         harness, core::init,                         //
         alarm::init,
-        alarm::impl  //
-        >;
+        alarm::impl,  //
+        command_parser::init>;
 };
 
 }  // namespace
@@ -26,6 +27,7 @@ main() {
     nexus.service<RuntimeInit>();
 
     for (;;) {
+        nexus.service<Alarm>(data_models::system_input_t{1.0f});
         nexus.service<MainLoop>();
     }
 

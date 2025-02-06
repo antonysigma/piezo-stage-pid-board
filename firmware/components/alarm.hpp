@@ -10,10 +10,12 @@
 #include "config.h"
 #include "data-models/pid-events.h"
 
-namespace {
-// Events
+namespace components {
+namespace alarm {
+
 using data_models::system_input_t;
 
+namespace internal {
 // Guards
 constexpr auto systemInputExceedLimit = [](const system_input_t t) -> bool {
     return t.value <= 0 || t.value >= systemInputmax;
@@ -39,10 +41,7 @@ struct AlarmState {
 using dispatch_t = boost::sml::dispatch<boost::sml::back::policies::branch_stm>;
 boost::sml::sm<AlarmState, dispatch_t> alarm_state_machine;
 
-}  // namespace
-
-namespace components {
-namespace alarm {
+}  // namespace internal
 
 static constexpr auto setup_pin = flow::action("AlarmInit"_sc, []() { pinMode(alarmLED, OUTPUT); });
 
@@ -52,8 +51,8 @@ struct init {
 };
 
 struct impl {
-    constexpr static auto config = cib::config(
-        cib::extend<Alarm>([](system_input_t event) { alarm_state_machine.process_event(event); }));
+    constexpr static auto config = cib::config(cib::extend<Alarm>(
+        [](system_input_t event) { internal::alarm_state_machine.process_event(event); }));
 };
 
 }  // namespace alarm

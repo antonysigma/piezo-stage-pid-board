@@ -2,6 +2,7 @@
 
 #include <wiring_private.h>
 
+#include "callbacks.hpp"
 #include "services.hpp"
 
 namespace components {
