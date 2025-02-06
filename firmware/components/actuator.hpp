@@ -44,6 +44,8 @@ static constexpr auto search_idx = flow::action("SearchIDX"_sc, []() {
             break;
         }
     }
+
+    cib::service<ResetPositionSensor>();
 });
 
 struct init {

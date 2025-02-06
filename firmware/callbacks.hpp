@@ -5,8 +5,19 @@
 #include "data-models/pid-events.h"
 #include "data-models/position.h"
 
+// Main routine
+class RuntimeInit : public flow::service<> {};
 class MainLoop : public cib::callback_meta<> {};
+
+// Indicators
 class Alarm : public cib::callback_meta<data_models::system_input_t> {};
 class PositionLock : public cib::callback_meta<data_models::system_error_t> {};
-class PIDControl : public cib::callback_meta<data_models::position_t> {};
+
+// Sensors
+class ResetPositionSensor : public cib::callback_meta<> {};
+
+// Actuators
 class Actuator : public cib::callback_meta<data_models::dac_command_t> {};
+
+// Controllers
+class PIDControl : public cib::callback_meta<data_models::position_t> {};

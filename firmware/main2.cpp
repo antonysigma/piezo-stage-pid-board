@@ -1,8 +1,12 @@
+// Boost-SML must be included before Arduino.h
+#include <boost/sml.hpp>
+
 #include "callbacks.hpp"
 #include "components/actuator.hpp"
 #include "components/alarm.hpp"
 #include "components/command_parser.hpp"
 #include "components/core.hpp"
+#include "components/linear-encoder.hpp"
 #include "components/position-lock.hpp"
 
 namespace {
@@ -12,8 +16,9 @@ struct interfaces {
         cib::exports<MainLoop>,                  //
         cib::exports<PIDControl>,                //
         cib::exports<PositionLock>,
-        cib::exports<Alarm>  //
-    );
+        cib::exports<Alarm>,       //
+        cib::exports<PIDControl>,  //
+        cib::exports<ResetPositionSensor>);
 };
 
 using namespace components;
@@ -26,7 +31,8 @@ struct project {
         command_parser::init,  //
         command_parser::impl,  //
         position_lock::init,   //
-        position_lock::impl>;
+        position_lock::impl,   //
+        linear_encoder::impl>;
 };
 
 }  // namespace
