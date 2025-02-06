@@ -6,3 +6,5 @@
 *.pdf
 *.net
 firmware/build-uno/
+firmware/build/
+firmware/subprojects/
