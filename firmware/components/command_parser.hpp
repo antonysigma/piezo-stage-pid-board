@@ -52,7 +52,7 @@ struct impl {
                 clamped_position.data.value = clamp(position_command.data.value, -50, 250);
 
                 // How do I send a message to another component?
-                cib::service<PIDControl>(clamped_position);
+                cib::service<SetDesiredSystemOutput>(clamped_position);
 
                 has_new_position = false;
             }

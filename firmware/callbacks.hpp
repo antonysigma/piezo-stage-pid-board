@@ -10,8 +10,8 @@ class RuntimeInit : public flow::service<> {};
 class MainLoop : public cib::callback_meta<> {};
 
 // Indicators
-class Alarm : public cib::callback_meta<data_models::system_input_t> {};
-class PositionLock : public cib::callback_meta<data_models::system_error_t> {};
+class TestPIDFault : public cib::callback_meta<data_models::system_input_t> {};
+class TestPositionLock : public cib::callback_meta<data_models::system_error_t> {};
 
 // Sensors
 class ResetPositionSensor : public cib::callback_meta<> {};
@@ -20,4 +20,4 @@ class ResetPositionSensor : public cib::callback_meta<> {};
 class MoveTo : public cib::callback_meta<data_models::dac_command_t> {};
 
 // Controllers
-class PIDControl : public cib::callback_meta<data_models::position_t> {};
+class SetDesiredSystemOutput : public cib::callback_meta<data_models::position_t> {};

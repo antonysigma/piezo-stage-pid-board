@@ -14,6 +14,9 @@ arduinocore_proj = subproject('arduinocore-avr')
 adafruit_mcp4725_dep = subproject('Adafruit_MCP4725').get_variable('adafruit_mcp4725_dep')
 encoder_dep = subproject('Encoder').get_variable('encoder_dep')
 
+common_inc = include_directories('.')
+subdir('pid-controller')
+
 main_exe = executable('main',
     sources: [
         'main2.cpp',
@@ -31,5 +34,6 @@ main_exe = executable('main',
         arduinocore_proj.get_variable('arduinocore_wire_dep'),
         adafruit_mcp4725_dep,
         encoder_dep,
+        pid_controller_dep,
     ],
 )

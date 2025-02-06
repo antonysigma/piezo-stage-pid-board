@@ -49,7 +49,7 @@ struct impl {
     constexpr static auto config =
         cib::config(cib::extend<RuntimeInit>(                           //
                         components::core::disable_usart >> setup_pin),  //
-                    cib::extend<Alarm>([](system_input_t event) {
+                    cib::extend<TestPIDFault>([](system_input_t event) {
                         internal::alarm_state_machine.process_event(event);
                     })  //
         );

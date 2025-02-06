@@ -71,7 +71,7 @@ struct impl {
     constexpr static auto config =
         cib::config(cib::extend<RuntimeInit>(                           //
                         components::core::disable_usart >> setup_pin),  //
-                    cib::extend<PositionLock>([](system_error_t event) {
+                    cib::extend<TestPositionLock>([](system_error_t event) {
                         internal::position_lock_state_machine.process_event(event);
                     })  //
         );

@@ -14,11 +14,11 @@ struct interfaces {
     static constexpr auto config = cib::config(  //
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
-        cib::exports<PIDControl>,                //
-        cib::exports<PositionLock>,              //
+        cib::exports<SetDesiredSystemOutput>,    //
+        cib::exports<TestPositionLock>,          //
         cib::exports<MoveTo>,
-        cib::exports<Alarm>,       //
-        cib::exports<PIDControl>,  //
+        cib::exports<TestPIDFault>,            //
+        cib::exports<SetDesiredSystemOutput>,  //
         cib::exports<ResetPositionSensor>);
 };
 
