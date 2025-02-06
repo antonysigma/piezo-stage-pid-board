@@ -8,12 +8,16 @@ if not meson.is_cross_build()
     error('Must be a cross-compile environment.')
 endif
 
+boost_sml_inc = subproject('boost-sml').get_variable('boost_sml_inc')
 cib_dep = subproject('compile-time-init-build').get_variable('cib_dep')
 arduinocore_proj = subproject('arduinocore-avr')
 
 main_exe = executable('main',
     sources: [
         'main2.cpp',
+    ],
+    include_directories: [
+        boost_sml_inc,
     ],
     dependencies: [
         cib_dep,

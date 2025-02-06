@@ -4,14 +4,17 @@
 
 namespace {
 struct harness {
-    static constexpr auto config = cib::config(cib::exports<RuntimeInit>, cib::exports<MainLoop>);
+    static constexpr auto config = cib::config(cib::exports<RuntimeInit>,  //
+                                               cib::exports<MainLoop>,     //
+                                               cib::exports<Alarm>);
 };
 
 using namespace components;
 struct project {
     static constexpr auto config = cib::components<  //
         harness, core::init,                         //
-        alarm::init                                  //
+        alarm::init,
+        alarm::impl  //
         >;
 };
 
