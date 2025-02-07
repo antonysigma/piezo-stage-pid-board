@@ -19,7 +19,7 @@ subdir('pid-controller')
 
 main_exe = executable('main',
     sources: [
-        'main2.cpp',
+        'main.cpp',
     ],
     cpp_args: [
         # For Encoder.h

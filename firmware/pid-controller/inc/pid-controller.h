@@ -22,7 +22,7 @@ class PIDController {
     static constexpr auto Td = 500_us;        // Derivative time
 
     // Slew rate limiter: limit changes to 50um / 5ms = 20 count / ms
-    static constexpr auto scale_factor = 2_count / 1_um;
+    static constexpr auto scale_factor = 2_step / 1_um;
     static constexpr auto slewRatelimit = scale_factor * (50_um / 5_ms) * (1_ms / 1000_us);
 
     // Bug: Should be 20 count / ms instead.
