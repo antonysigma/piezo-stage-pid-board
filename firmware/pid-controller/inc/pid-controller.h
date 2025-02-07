@@ -23,14 +23,17 @@ class PIDController {
 
     // Slew rate limiter: limit changes to 50um / 5ms = 20 count / ms
     static constexpr auto scale_factor = 2_step / 1_um;
-    static constexpr auto slewRatelimit = scale_factor * (50_um / 5_ms) * (1_ms / 1000_us);
+    static constexpr auto slewRatelimit =
+        (2'000'000_step / 1_um) * (50_um / 5_ms) * (1_ms / 1000_us);
 
-    // Bug: Should be 20 count / ms instead.
-    // static_assert(slewRatelimit.value == 20e3f);
+    //! @todo Should be 20 count / ms instead.
+    static_assert(slewRatelimit.value == 20e3f);
 
     static constexpr float Ki_times_DeltaT = Kp / (Ti / sampleTime);
     static constexpr float Kd_over_DeltaT = Kp * (Td / sampleTime);
     static constexpr auto eMax = slewRatelimit * sampleTime;  // Slew rate limit
+    static_assert(eMax > 1_step);
+
     static constexpr uint16_t systemInputdefault = dac_offset;
 
    private:

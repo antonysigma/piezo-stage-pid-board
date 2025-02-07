@@ -33,6 +33,8 @@ struct Micrometer {
 
 struct Step {
     int32_t value{};
+
+    auto operator<=>(const Step& other) const = default;
 };
 
 struct Second {
@@ -87,21 +89,11 @@ operator-(const Unit a) {
     return {-a.value};
 }
 
-constexpr auto
-operator<=>(const Step a, const Step b) {
-    return a.value < b.value;
-}
-
 namespace literals {
 
 constexpr ::units::Micrometer<int32_t>
 operator""_um(uint64_t v) {
     return {static_cast<int32_t>(v)};
-}
-
-constexpr ::units::Micrometer<int16_t>
-operator""_um16i(uint64_t v) {
-    return {static_cast<int16_t>(v)};
 }
 
 constexpr ::units::Second
@@ -122,15 +114,17 @@ operator""_us(uint64_t v) {
 constexpr ::units::Step
 operator""_step(uint64_t v) {
     return {static_cast<int32_t>(v)};
-
-    static_assert((5_um).value == 5);
-    static_assert((5_ms).value == 5);
-    // static_assert((5_step).value == 5);
-
-    static_assert((4_um / 2_ms).value == 2.0f);
-    static_assert((50_um / 5_ms).value == 10.0f);
-
-    static_assert(std::is_same_v<decltype(50_um16i), units::Micrometer<int16_t>>);
 }
+
+static_assert((5_um).value == 5);
+static_assert((5_ms).value == 5);
+
+static_assert((4_um / 2_ms).value == 2.0f);
+static_assert((50_um / 5_ms).value == 10.0f);
+
+static_assert((5_step).value == 5);
+static_assert((1_step).value == 1);
+static_assert(5_step > 1_step);
+
 }  // namespace literals
 }  // namespace units
