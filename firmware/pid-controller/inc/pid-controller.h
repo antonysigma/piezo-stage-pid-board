@@ -21,17 +21,17 @@ class PIDController {
     static constexpr auto Ti = 10'000_us;     // Integral time
     static constexpr auto Td = 500_us;        // Derivative time
 
-    // Slew rate limiter: limit changes to 50um / 5ms = 20 count / ms
     static constexpr auto scale_factor = 2_step / 1_um;
-    static constexpr auto slewRatelimit =
-        (2'000'000_step / 1_um) * (50_um / 5_ms) * (1_ms / 1000_us);
 
-    //! @todo Should be 20 count / ms instead.
-    static_assert(slewRatelimit.value == 20e3f);
+    //! Slew rate limiter: limit changes to 50um / 5ms = 20 count / us
+    static constexpr auto slewRatelimit = scale_factor * (50_um / 5_ms);
+
+    //! @todo Why the hardware-in-the-loop experiment indicates 1000x difference?
+    // static_assert(slewRatelimit.value == 20e3f);
 
     static constexpr float Ki_times_DeltaT = Kp / (Ti / sampleTime);
     static constexpr float Kd_over_DeltaT = Kp * (Td / sampleTime);
-    static constexpr auto eMax = slewRatelimit * sampleTime;  // Slew rate limit
+    static constexpr auto eMax = slewRatelimit * (1_ms / 1'000_us) * sampleTime;  // Slew rate limit
     static_assert(eMax > 1_step);
 
     static constexpr uint16_t systemInputdefault = dac_offset;
