@@ -4,6 +4,10 @@
 #include "config.h"
 #include "units.hpp"
 
+// todo: Why does PIDControl needs to know about encoder and DAC scale factors?
+#include "data-models/dac-command.h"
+#include "data-models/encoder-readout.h"
+
 using namespace units::literals;
 using units::Abs;
 
@@ -42,8 +46,8 @@ class PIDController {
     PIDController();
 
     void setDesiredSystemOutput(units::Micrometer);
-    [[nodiscard]] uint16_t getSysteminput() const;
+    [[nodiscard]] data_models::dac_command_t getSystemInput() const;
     [[nodiscard]] units::Count getSystemOutput() const;
 
-    void update(uint32_t currentMicros);
+    void update(uint32_t currentMicros, data_models::encoder_readout_t);
 };

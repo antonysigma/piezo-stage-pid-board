@@ -2,7 +2,6 @@
 
 #include "config.h"
 #include "utils.hpp"
-
 PIDController::PIDController() {
     // previousMicros = micros();
 }
@@ -12,9 +11,9 @@ PIDController::setDesiredSystemOutput(units::Micrometer value) {
     x_desired = scale_factor * value;
 }
 
-uint16_t
-PIDController::getSysteminput() const {
-    return u;
+data_models::dac_command_t
+PIDController::getSystemInput() const {
+    return {static_cast<uint16_t>(u)};
 }
 
 units::Count
@@ -22,14 +21,14 @@ PIDController::getSystemOutput() const {
     return x_actual[0];
 }
 void
-PIDController::update(uint32_t currentMicros) {
+PIDController::update(uint32_t currentMicros, data_models::encoder_readout_t encoder_readout) {
     using utils::clamp;
     if ((currentMicros - previousMicros) < sampleTime.value) return;
 
     previousMicros = currentMicros;
 
     // const int16_t new_x_actual = encoder->read();
-    const units::Count new_x_actual{0};
+    const auto new_x_actual = encoder_readout.value;
     // Compute system input error with slew rate limiter
     const float new_e = clamp(x_desired - new_x_actual, -eMax, eMax).value;
 

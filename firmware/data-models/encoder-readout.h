@@ -1,6 +1,6 @@
 #pragma once
-#include <cstdint>
-
+namespace data_models {
 struct encoder_readout_t {
-    int32_t value{0};
+    units::Count value{0};
 };
+}  // namespace data_models
