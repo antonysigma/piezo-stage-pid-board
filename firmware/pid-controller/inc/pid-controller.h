@@ -2,6 +2,10 @@
 #include <stdint.h>
 
 #include "config.h"
+#include "units.hpp"
+
+using namespace units::literals;
+using units::Abs;
 
 class PIDController {
    public:
@@ -10,20 +14,24 @@ class PIDController {
     static constexpr auto sign = INVERT_OUTPUT ? -1 : 1;
 
     static constexpr float Kp = 2e1f * sign;  // Proportional gain
-    static constexpr float Ti = 1e-2f;        // Integral time / second
-    static constexpr float Td = 5e-4f;        // Derivative time / second
+    static constexpr auto Ti = 10'000_us;     // Integral time
+    static constexpr auto Td = 500_us;        // Derivative time
 
     // Slew rate limiter: limit changes to 50um / 5ms = 20 count / ms
-    static constexpr float slewRatelimit = 20e3f;
+    static constexpr auto scale_factor = 2_count / 1_um;
+    static constexpr auto slewRatelimit = scale_factor * (50_um / 5_ms) * (1_ms / 1000_us);
 
-    static constexpr float Ki_times_DeltaT = Kp / Ti * 1e-6f * sampleTime;
-    static constexpr float Kd_over_DeltaT = Kp * Td * 1e6f / sampleTime;
-    static constexpr float eMax = slewRatelimit * sampleTime * 1e-6f;  // Slew rate limit
+    // Bug: Should be 20 count / ms instead.
+    // static_assert(slewRatelimit.value == 20e3f);
+
+    static constexpr float Ki_times_DeltaT = Kp / (Ti / sampleTime);
+    static constexpr float Kd_over_DeltaT = Kp * (Td / sampleTime);
+    static constexpr auto eMax = slewRatelimit * sampleTime;  // Slew rate limit
     static constexpr uint16_t systemInputdefault = dac_offset;
 
    private:
-    int16_t x_desired = 0;         // desired output
-    int16_t x_actual[2] = {0, 0};  // actual output
+    units::Count x_desired{0};          // desired output
+    units::Count x_actual[2] = {0, 0};  // actual output
 
     float e = 0;                   // Previous error value
     float u = systemInputdefault;  // Previous control input
@@ -33,9 +41,9 @@ class PIDController {
    public:
     PIDController();
 
-    void setSystemoutput(int16_t value);
+    void setDesiredSystemOutput(units::Micrometer);
     [[nodiscard]] uint16_t getSysteminput() const;
-    [[nodiscard]] int16_t getSystemoutput() const;
+    [[nodiscard]] units::Count getSystemOutput() const;
 
     void update(uint32_t currentMicros);
 };

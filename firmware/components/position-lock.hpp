@@ -23,15 +23,15 @@ struct tracking {
 
 // Guards
 constexpr auto errorWithinThreshold = [](const system_error_t t) -> bool {
-    return abs(t.value) <= 1.0f;
+    return (-1_count <= t.value) && (t.value <= 1_count);
 };
 
 constexpr auto systemInputExceedLimit = [](const system_error_t t) -> bool {
-    return t.value <= 0 || t.value >= systemInputmax;
+    return t.value <= 0_count || t.value >= systemInputmax;
 };
 
 // Debounce switch: change state only after 50ms
-constexpr uint8_t max_debounce = 5000UL / sampleTime;
+constexpr uint8_t max_debounce = 5000_us / sampleTime;
 
 constexpr auto debounceReady = [](const system_error_t, const tracking t) -> bool {
     return t.n_debounce >= max_debounce;
