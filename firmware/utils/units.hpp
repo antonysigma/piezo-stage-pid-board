@@ -14,7 +14,7 @@ concept SignedUnit = requires(Unit u) {
 template <typename T>
 constexpr T
 Abs(T x) {
-    return (x >= 0) ? x : -x;
+    return (x >= T{0}) ? x : -x;
 }
 
 struct Volt {

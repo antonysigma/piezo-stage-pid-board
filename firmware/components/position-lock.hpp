@@ -23,7 +23,8 @@ struct tracking {
 
 // Guards
 constexpr auto errorWithinThreshold = [](const system_error_t t) -> bool {
-    return (-1_step <= t.value) && (t.value <= 1_step);
+    using units::Abs;
+    return Abs(t.value) <= 1_step;
 };
 
 constexpr auto systemInputExceedLimit = [](const system_error_t t) -> bool {
