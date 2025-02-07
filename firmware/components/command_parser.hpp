@@ -6,7 +6,7 @@
 #include "components/core.hpp"
 #include "config.h"
 #include "data-models/position.h"
-#include "utils.hpp"
+#include "utils/clamp.hpp"
 
 namespace components {
 namespace command_parser {

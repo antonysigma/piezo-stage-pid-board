@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include "config.h"
-#include "units.hpp"
+#include "utils/units.hpp"
 
 // todo: Why does PIDControl needs to know about encoder and DAC scale factors?
 #include "data-models/dac-command.h"

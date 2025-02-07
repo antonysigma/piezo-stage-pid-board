@@ -4,7 +4,7 @@
 #include "callbacks.hpp"
 #include "config.h"
 #include "data-models/encoder-readout.h"
-#include "units.hpp"
+#include "utils/units.hpp"
 
 namespace components {
 namespace linear_encoder {
