@@ -1,0 +1,6 @@
+[wrap-file]
+directory = Encoder-1.4.4
+source_url = https://github.com/PaulStoffregen/Encoder/archive/refs/tags/1.4.4.tar.gz
+source_filename = encoder-1.4.4.tar.gz
+source_hash = c66127df8b2bf449db09fd965e6860c8d67dbd7b0a53c6e5fd678d40dfc80443
+patch_directory = Encoder
