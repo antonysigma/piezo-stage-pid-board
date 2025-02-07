@@ -13,7 +13,7 @@ namespace internal {
 Encoder encoder(encoder_A, encoder_B);
 }
 
-units::Step
+data_models::encoder_readout_t
 read() {
     return {internal::encoder.read()};
 }

@@ -9,6 +9,7 @@ if not meson.is_cross_build()
 endif
 
 boost_sml_inc = subproject('boost-sml').get_variable('boost_sml_inc')
+avr_stdcpp_dep = subproject('avr-libstdcpp').get_variable('avr_stdcpp_dep')
 cib_dep = subproject('compile-time-init-build').get_variable('cib_dep')
 arduinocore_proj = subproject('arduinocore-avr')
 adafruit_mcp4725_dep = subproject('Adafruit_MCP4725').get_variable('adafruit_mcp4725_dep')

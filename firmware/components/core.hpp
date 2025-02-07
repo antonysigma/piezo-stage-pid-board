@@ -38,8 +38,9 @@ static constexpr auto disable_usart = flow::action("DisableUSART"_sc, []() {
 });
 
 struct impl {
-    constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
-        timer0_init >> disable_usart));
+    constexpr static auto config = cib::config(                 //
+        cib::extend<RuntimeInit>(timer0_init >> disable_usart)  //
+    );
 };
 
 }  // namespace core

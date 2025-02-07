@@ -7,8 +7,9 @@ PIDController::PIDController() {
 }
 
 void
-PIDController::setDesiredSystemOutput(units::Micrometer value) {
-    x_desired = scale_factor * value;
+PIDController::setDesiredSystemOutput(units::Micrometer<int16_t> value) {
+    using M32 = units::Micrometer<int32_t>;
+    x_desired = scale_factor * M32(value);
 }
 
 data_models::dac_command_t

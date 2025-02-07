@@ -45,7 +45,9 @@ class PIDController {
    public:
     PIDController();
 
-    void setDesiredSystemOutput(units::Micrometer);
+    void setDesiredSystemOutput(units::Micrometer<int16_t>);
+
+    //! @todo Should implement dependency injection here.
     [[nodiscard]] data_models::dac_command_t getSystemInput() const;
     [[nodiscard]] units::Step getSystemOutput() const;
 

@@ -1,6 +1,15 @@
 #pragma once
+#include <compare>
+#include <concepts>
 
 namespace units {
+template <typename T, typename... U>
+concept IsAnyOf = (std::same_as<T, U> || ...);
+
+template <typename Unit>
+concept SignedUnit = requires(Unit u) {
+    { +u.value } -> std::signed_integral;
+};
 
 template <typename T>
 constexpr T
@@ -12,8 +21,14 @@ struct Volt {
     int32_t value{};
 };
 
+template <typename T>
 struct Micrometer {
-    int32_t value{};
+    T value{};
+
+    explicit constexpr operator Micrometer<int32_t>() const {
+        static_assert(std::is_same_v<T, int16_t>);
+        return {value};
+    }
 };
 
 struct Step {
@@ -60,42 +75,33 @@ operator*(const Rational<Step, Q> a, const Q b) {
     return {static_cast<int32_t>(a.value * b.value)};
 }
 
-constexpr Step
-operator-(const Step a, const Step b) {
+template <SignedUnit Unit>
+constexpr Unit
+operator-(const Unit a, const Unit b) {
     return {a.value - b.value};
 }
 
-constexpr Step
-operator-(const Step a) {
+template <SignedUnit Unit>
+constexpr Unit
+operator-(const Unit a) {
     return {-a.value};
 }
 
-// todo: Use spaceship operator.
-constexpr bool
-operator<(const Step a, const Step b) {
+constexpr auto
+operator<=>(const Step a, const Step b) {
     return a.value < b.value;
-}
-
-constexpr bool
-operator>(const Step a, const Step b) {
-    return a.value > b.value;
-}
-
-constexpr bool
-operator>=(const Step a, const Step b) {
-    return a.value >= b.value;
-}
-
-constexpr bool
-operator<=(const Step a, const Step b) {
-    return a.value <= b.value;
 }
 
 namespace literals {
 
-constexpr ::units::Micrometer
+constexpr ::units::Micrometer<int32_t>
 operator""_um(uint64_t v) {
     return {static_cast<int32_t>(v)};
+}
+
+constexpr ::units::Micrometer<int16_t>
+operator""_um16i(uint64_t v) {
+    return {static_cast<int16_t>(v)};
 }
 
 constexpr ::units::Second
@@ -123,6 +129,8 @@ operator""_step(uint64_t v) {
 
     static_assert((4_um / 2_ms).value == 2.0f);
     static_assert((50_um / 5_ms).value == 10.0f);
+
+    static_assert(std::is_same_v<decltype(50_um16i), units::Micrometer<int16_t>>);
 }
 }  // namespace literals
 }  // namespace units

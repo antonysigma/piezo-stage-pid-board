@@ -12,8 +12,8 @@ namespace components {
 namespace command_parser {
 
 using data_models::position_t;
-namespace internal {
 
+namespace internal {
 volatile position_t position_command;
 volatile bool has_new_position{false};
 
@@ -29,7 +29,6 @@ receiveEvent(int numBytes) {
     buffer[1] = Wire.read();
     has_new_position = true;
 }
-
 }  // namespace internal
 
 static constexpr auto setup_i2c = flow::action("I2CInit"_sc, []() {
@@ -49,6 +48,8 @@ struct impl {
             if (has_new_position) {
                 // When the new position command is received, execute it.
                 data_models::position_t clamped_position{};
+
+                //! @todo Explicitly casting defeats the purpose of SI units.
                 clamped_position.data.value = clamp(position_command.data.value, -50, 250);
 
                 // How do I send a message to another component?

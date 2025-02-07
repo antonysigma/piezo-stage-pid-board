@@ -4,6 +4,9 @@ pid_controller_lib = static_library('pid-controller',
         'inc',
         common_inc,
     ],
+    dependencies: [
+        avr_stdcpp_dep,
+    ],
 )
 
 pid_controller_dep = declare_dependency(

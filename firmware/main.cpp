@@ -7,6 +7,7 @@
 #include "components/command_parser.hpp"
 #include "components/core.hpp"
 #include "components/linear-encoder.hpp"
+#include "components/pid-control.hpp"
 #include "components/position-lock.hpp"
 
 namespace {
@@ -30,7 +31,10 @@ struct project {
         alarm::impl,                                 //
         command_parser::impl,                        //
         position_lock::impl,                         //
-        linear_encoder::impl, actuator::impl>;
+        linear_encoder::impl,                        //
+        pid_control::impl,                           //
+        actuator::impl                               //
+        >;
 };
 
 }  // namespace
