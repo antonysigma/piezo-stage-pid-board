@@ -22,7 +22,11 @@ main_exe = executable('main',
         'main2.cpp',
     ],
     cpp_args: [
+        # For Encoder.h
         '-DARDUINO=182',
+
+        # https://github.com/boost-ext/sml/issues/617
+        '-DBOOST_SML_CREATE_DEFAULT_CONSTRUCTIBLE_DEPS',
     ],
     include_directories: [
         boost_sml_inc,

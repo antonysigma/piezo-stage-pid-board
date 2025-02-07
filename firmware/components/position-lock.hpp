@@ -18,7 +18,7 @@ using data_models::system_error_t;
 namespace internal {
 // States
 struct tracking {
-    uint8_t n_debounce{0};
+    uint8_t n_debounce{};
 };
 
 // Guards
@@ -60,7 +60,7 @@ struct LockState {
 };
 
 using dispatch_t = boost::sml::dispatch<boost::sml::back::policies::branch_stm>;
-boost::sml::sm<LockState, dispatch_t> position_lock_state_machine;
+boost::sml::sm<LockState, dispatch_t> position_lock_state_machine{};
 
 }  // namespace internal
 
