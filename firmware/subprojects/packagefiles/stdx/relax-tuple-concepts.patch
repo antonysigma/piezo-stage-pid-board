@@ -1,0 +1,22 @@
+diff --git a/include/stdx/tuple.hpp b/include/stdx/tuple.hpp
+index 215cb7c..2569987 100644
+--- a/include/stdx/tuple.hpp
++++ b/include/stdx/tuple.hpp
+@@ -351,7 +351,7 @@ struct tuple_impl<std::index_sequence<Is...>, index_function_list<Fs...>, Ts...>
+ 
+   private:
+     template <typename Funcs, typename... Us>
+-        requires(... and std::equality_comparable_with<Ts, Us>)
++        //requires(... and std::equality_comparable_with<Ts, Us>)
+     [[nodiscard]] friend constexpr auto
+     operator==(tuple_impl const &lhs,
+                tuple_impl<std::index_sequence<Is...>, Funcs, Us...> const &rhs)
+@@ -360,7 +360,7 @@ struct tuple_impl<std::index_sequence<Is...>, index_function_list<Fs...>, Ts...>
+     }
+ 
+     template <typename Funcs, typename... Us>
+-        requires(... and std::three_way_comparable_with<Ts, Us>)
++        //requires(... and std::three_way_comparable_with<Ts, Us>)
+     [[nodiscard]] friend constexpr auto operator<=>(
+         tuple_impl const &lhs,
+         tuple_impl<std::index_sequence<Is...>, Funcs, Us...> const &rhs) {

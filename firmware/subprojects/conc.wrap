@@ -1,0 +1,9 @@
+[wrap-git]
+directory = cpp-baremetal-concurrency
+url = https://github.com/intel/cpp-baremetal-concurrency.git
+revision = fd756b8cb2d6a098509eeed8bde1fe3459a108a0
+depth = 1
+patch_directory = conc
+
+[provide]
+conc = conc_dep

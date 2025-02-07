@@ -1,0 +1,6 @@
+[wrap-file]
+directory = mp11-boost-1.83.0
+source_url = https://github.com/boostorg/mp11/archive/refs/tags/boost-1.83.0.tar.gz
+source_filename = boost-1.83.0.tar.gz
+source_hash = 5b0a4397ff386e0b94e66f18ce6d3dbc9230ace40448bbc79a3963c166c326d1
+patch_directory = mp11
