@@ -18,7 +18,7 @@ using data_models::system_input_t;
 namespace internal {
 // Guards
 constexpr auto systemInputExceedLimit = [](const system_input_t t) -> bool {
-    return t.value <= 0_count || t.value >= systemInputmax;
+    return t.value <= 0_step || t.value >= systemInputmax;
 };
 
 // Actions

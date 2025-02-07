@@ -34,8 +34,8 @@ class PIDController {
     static constexpr uint16_t systemInputdefault = dac_offset;
 
    private:
-    units::Count x_desired{0};          // desired output
-    units::Count x_actual[2] = {0, 0};  // actual output
+    units::Step x_desired{0};          // desired output
+    units::Step x_actual[2] = {0, 0};  // actual output
 
     float e = 0;                   // Previous error value
     float u = systemInputdefault;  // Previous control input
@@ -47,7 +47,7 @@ class PIDController {
 
     void setDesiredSystemOutput(units::Micrometer);
     [[nodiscard]] data_models::dac_command_t getSystemInput() const;
-    [[nodiscard]] units::Count getSystemOutput() const;
+    [[nodiscard]] units::Step getSystemOutput() const;
 
     void update(uint32_t currentMicros, data_models::encoder_readout_t);
 };

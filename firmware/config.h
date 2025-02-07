@@ -15,5 +15,5 @@ constexpr auto alarmLED = 7;
 constexpr uint16_t dac_offset =
     static_cast<uint16_t>(4096L * 4 / 5);  // 4096 steps / 5 Volt * 4.0 Volt;
 
-constexpr auto systemInputmax = 4095_count;
+constexpr auto systemInputmax = 4095_step;
 constexpr auto sampleTime = 500_us;

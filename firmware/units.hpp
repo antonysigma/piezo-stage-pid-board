@@ -16,7 +16,7 @@ struct Micrometer {
     int32_t value{};
 };
 
-struct Count {
+struct Step {
     int32_t value{};
 };
 
@@ -55,39 +55,39 @@ operator*(const Rational<P, Q> a, const Rational<Q, R> b) {
 }
 
 template <class Q>
-constexpr Count
-operator*(const Rational<Count, Q> a, const Q b) {
+constexpr Step
+operator*(const Rational<Step, Q> a, const Q b) {
     return {static_cast<int32_t>(a.value * b.value)};
 }
 
-constexpr Count
-operator-(const Count a, const Count b) {
+constexpr Step
+operator-(const Step a, const Step b) {
     return {a.value - b.value};
 }
 
-constexpr Count
-operator-(const Count a) {
+constexpr Step
+operator-(const Step a) {
     return {-a.value};
 }
 
 // todo: Use spaceship operator.
 constexpr bool
-operator<(const Count a, const Count b) {
+operator<(const Step a, const Step b) {
     return a.value < b.value;
 }
 
 constexpr bool
-operator>(const Count a, const Count b) {
+operator>(const Step a, const Step b) {
     return a.value > b.value;
 }
 
 constexpr bool
-operator>=(const Count a, const Count b) {
+operator>=(const Step a, const Step b) {
     return a.value >= b.value;
 }
 
 constexpr bool
-operator<=(const Count a, const Count b) {
+operator<=(const Step a, const Step b) {
     return a.value <= b.value;
 }
 
@@ -113,7 +113,7 @@ operator""_us(uint64_t v) {
     return {static_cast<int32_t>(v)};
 }
 
-constexpr ::units::Count
+constexpr ::units::Step
 operator""_count(uint64_t v) {
     return {static_cast<int32_t>(v)};
 

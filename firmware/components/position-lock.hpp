@@ -23,11 +23,11 @@ struct tracking {
 
 // Guards
 constexpr auto errorWithinThreshold = [](const system_error_t t) -> bool {
-    return (-1_count <= t.value) && (t.value <= 1_count);
+    return (-1_step <= t.value) && (t.value <= 1_step);
 };
 
 constexpr auto systemInputExceedLimit = [](const system_error_t t) -> bool {
-    return t.value <= 0_count || t.value >= systemInputmax;
+    return t.value <= 0_step || t.value >= systemInputmax;
 };
 
 // Debounce switch: change state only after 50ms
