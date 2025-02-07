@@ -24,8 +24,7 @@ struct impl {
         }),  //
         cib::extend<MainLoop>([]() {
             const auto current_time = micros();
-            const auto encoder_readout = components::linear_encoder::read();
-            internal::pid_controller.update(current_time, encoder_readout);
+            internal::pid_controller.update(current_time, components::linear_encoder::read);
         })  //
     );
 };

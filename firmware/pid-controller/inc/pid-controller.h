@@ -54,5 +54,6 @@ class PIDController {
     [[nodiscard]] data_models::dac_command_t getSystemInput() const;
     [[nodiscard]] units::Step getSystemOutput() const;
 
-    void update(uint32_t currentMicros, data_models::encoder_readout_t);
+    using readout_func = data_models::encoder_readout_t (*)();
+    void update(uint32_t currentMicros, readout_func);
 };

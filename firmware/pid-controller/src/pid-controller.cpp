@@ -22,14 +22,13 @@ PIDController::getSystemOutput() const {
     return x_actual[0];
 }
 void
-PIDController::update(uint32_t currentMicros, data_models::encoder_readout_t encoder_readout) {
+PIDController::update(uint32_t currentMicros, readout_func encoder_readout_func) {
     using utils::clamp;
     if ((currentMicros - previousMicros) < sampleTime.value) return;
 
     previousMicros = currentMicros;
 
-    // const int16_t new_x_actual = encoder->read();
-    const auto new_x_actual = encoder_readout.value;
+    const auto new_x_actual = encoder_readout_func().value;
     // Compute system input error with slew rate limiter
     const float new_e = clamp(x_desired - new_x_actual, -eMax, eMax).value;
 
