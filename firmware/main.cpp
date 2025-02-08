@@ -10,28 +10,26 @@
 #include "components/pid-control.hpp"
 #include "components/position-lock.hpp"
 
-//! @todo Why an out-of-class instantiation of static member?
-using my_actuator = components::actuator<DAC_ADDR>;
-
-using D = decltype(my_actuator::dac);
-template <>
-D my_actuator::dac{};
-
-namespace {
 struct registered_interfaces {
     static constexpr auto config = cib::config(  //
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
         cib::exports<TestPositionLock>,          //
         cib::exports<TestPIDFault>,              //
-        cib::exports<ResetPositionSensor>,       //
         cib::exports<OnIncomingMessage>          //
     );
 };
 
 using namespace components;
 using my_encoder = linear_encoder<encoder_A, encoder_B>;
+using my_actuator = components::actuator<DAC_ADDR, my_encoder>;
 using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder, my_actuator>;
+
+//! @todo Why an out-of-class instantiation of static member?
+using D = decltype(my_actuator::dac);
+template <>
+D my_actuator::dac{};
+
 struct project {
     static constexpr auto config = cib::components<  //
         registered_interfaces,                       //
@@ -39,9 +37,6 @@ struct project {
         // Indicators
         alarm::impl<alarmLED>,         //
         position_lock::impl<lockLED>,  //
-
-        // Sensors
-        my_encoder,  //
 
         // Actuators
         my_actuator,  //
@@ -54,7 +49,6 @@ struct project {
         >;
 };
 
-}  // namespace
 int
 main() {
     cib::nexus<project> nexus{};

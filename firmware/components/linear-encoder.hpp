@@ -13,10 +13,9 @@ class linear_encoder {
 
    public:
     static data_models::encoder_readout_t read() { return {encoder.read()}; }
-
-    constexpr static auto config = cib::config(cib::extend<ResetPositionSensor>([]() {
+    static void reset() {
         constexpr auto null_position = 0;
         encoder.write(null_position);
-    }));
+    }
 };
 }  // namespace components

@@ -13,8 +13,5 @@ class MainLoop : public cib::callback_meta<> {};
 class TestPIDFault : public cib::callback_meta<data_models::system_input_t> {};
 class TestPositionLock : public cib::callback_meta<data_models::system_error_t> {};
 
-// Sensors
-class ResetPositionSensor : public cib::callback_meta<> {};
-
 // Incoming i2c messages
 class OnIncomingMessage : public cib::callback_meta<int> {};

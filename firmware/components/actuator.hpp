@@ -7,7 +7,7 @@
 
 namespace components {
 
-template <uint8_t dac_addr>
+template <uint8_t dac_addr, class PositionSensor>
 struct actuator {
     static Adafruit_MCP4725 dac;
 
@@ -40,7 +40,7 @@ struct actuator {
             }
         }
 
-        cib::service<ResetPositionSensor>();
+        PositionSensor::reset();
     });
 
     static constexpr void moveTo(data_models::dac_command_t position) {
