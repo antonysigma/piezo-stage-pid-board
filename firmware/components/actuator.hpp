@@ -4,58 +4,51 @@
 #include <Wire.h>
 
 #include "components/command_parser.hpp"
-#include "config.h"
 
 namespace components {
-namespace actuator {
 
-using data_models::dac_command_t;
+template <uint8_t dac_addr>
+struct actuator {
+    static Adafruit_MCP4725 dac;
 
-namespace internal {
+    static constexpr auto setup_dac_connection = flow::action("DACInit"_sc, []() {
+        // For Adafruit MCP4725A1 the address is 0x62 (default) or 0x63 (ADDR pin tied to VCC)
+        // For MCP4725A0 the address is 0x60 or 0x61
+        // For MCP4725A2 the address is 0x64 or 0x65
+        dac.begin(dac_addr, &Wire);
+    });
 
-static Adafruit_MCP4725 dac;
-}
+    static constexpr auto setup_idx_input =
+        flow::action("IDXInit"_sc, []() { pinMode(encoder_IDX, INPUT_PULLUP); });
 
-static constexpr auto setup_dac_connection = flow::action("DACInit"_sc, []() {
-    // For Adafruit MCP4725A1 the address is 0x62 (default) or 0x63 (ADDR pin tied to VCC)
-    // For MCP4725A0 the address is 0x60 or 0x61
-    // For MCP4725A2 the address is 0x64 or 0x65
-    internal::dac.begin(DAC_ADDR, &Wire);
-});
+    static constexpr auto search_idx = flow::action("SearchIDX"_sc, []() {
+        delay(200);
 
-static constexpr auto setup_idx_input =
-    flow::action("IDXInit"_sc, []() { pinMode(encoder_IDX, INPUT_PULLUP); });
+        // Move to neutral position
+        constexpr uint16_t search_range = 200;
+        uint16_t position = dac_offset + search_range;
+        dac.setVoltage(position, false);
 
-static constexpr auto search_idx = flow::action("SearchIDX"_sc, []() {
-    delay(200);
+        // Scan for index signal
+        for (; position > dac_offset - search_range; position--) {
+            // TODO(Antony): Limit the slew rate to 1 count / ms
+            dac.setVoltage(position, false);
+            delay(10);
 
-    // Move to neutral position
-    constexpr uint16_t search_range = 200;
-    uint16_t position = dac_offset + search_range;
-    internal::dac.setVoltage(position, false);
-
-    // Scan for index signal
-    for (; position > dac_offset - search_range; position--) {
-        // TODO(Antony): Limit the slew rate to 1 count / ms
-        internal::dac.setVoltage(position, false);
-        delay(10);
-
-        if (!digitalRead(encoder_IDX)) {
-            break;
+            if (!digitalRead(encoder_IDX)) {
+                break;
+            }
         }
-    }
 
-    cib::service<ResetPositionSensor>();
-});
+        cib::service<ResetPositionSensor>();
+    });
 
-struct impl {
     constexpr static auto config = cib::config(  //
         cib::extend<RuntimeInit>(components::command_parser::setup_i2c >> setup_idx_input >>
                                  setup_dac_connection >> search_idx),  //
         cib::extend<MoveTo>(
-            [](dac_command_t position) { internal::dac.setVoltage(position.value, false); })  //
+            [](data_models::dac_command_t position) { dac.setVoltage(position.value, false); })  //
     );
 };
 
-}  // namespace actuator
 }  // namespace components

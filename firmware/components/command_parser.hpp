@@ -16,31 +16,24 @@ using data_models::position_t;
 namespace internal {
 volatile position_t position_command;
 volatile bool has_new_position{false};
-
-/** Callback of any i2c incoming signals.
- *
- * Decode the incoming two-byte message as 16-bit integer in little-endian
- * representation.
- */
-void
-receiveEvent(int numBytes) {
-    auto& buffer = position_command.data.buffer;
-    buffer[0] = Wire.read();
-    buffer[1] = Wire.read();
-    has_new_position = true;
-}
 }  // namespace internal
 
 static constexpr auto setup_i2c = flow::action("I2CInit"_sc, []() {
     // Register the MCU in multi-master mode, having I2C address 0x09.
     Wire.begin(MCU_ADDR);
-    Wire.onReceive(internal::receiveEvent);
+    Wire.onReceive(cib::service<OnIncomingMessage>);
 });
 
 struct impl {
     constexpr static auto config = cib::config(
         cib::extend<RuntimeInit>(                           //
             components::core::disable_usart >> setup_i2c),  //
+        cib::extend<OnIncomingMessage>([](int) {
+            auto& buffer = internal::position_command.data.buffer;
+            buffer[0] = Wire.read();
+            buffer[1] = Wire.read();
+            internal::has_new_position = true;
+        }),  //
         cib::extend<MainLoop>([]() {
             using internal::has_new_position;
             using internal::position_command;

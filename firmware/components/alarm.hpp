@@ -43,9 +43,11 @@ boost::sml::sm<AlarmState, dispatch_t> alarm_state_machine;
 
 }  // namespace internal
 
-static constexpr auto setup_pin = flow::action("AlarmInit"_sc, []() { pinMode(alarmLED, OUTPUT); });
-
+template <uint8_t alarm_led_pin>
 struct impl {
+    static constexpr auto setup_pin =
+        flow::action("AlarmInit"_sc, []() { pinMode(alarm_led_pin, OUTPUT); });
+
     constexpr static auto config =
         cib::config(cib::extend<RuntimeInit>(                           //
                         components::core::disable_usart >> setup_pin),  //

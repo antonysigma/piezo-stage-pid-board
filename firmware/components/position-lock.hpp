@@ -7,7 +7,6 @@
 
 #include "callbacks.hpp"
 #include "components/core.hpp"
-#include "config.h"
 #include "data-models/pid-events.h"
 
 namespace components {
@@ -65,11 +64,12 @@ boost::sml::sm<LockState, dispatch_t> position_lock_state_machine{};
 
 }  // namespace internal
 
-static constexpr auto setup_pin =
-    flow::action("PositionLockInit"_sc, []() { pinMode(lockLED, OUTPUT); });
-
+template <uint8_t lock_led_pin>
 struct impl {
-    constexpr static auto config =
+    static constexpr auto setup_pin =
+        flow::action("PositionLockInit"_sc, []() { pinMode(lock_led_pin, OUTPUT); });
+
+    static constexpr auto config =
         cib::config(cib::extend<RuntimeInit>(                           //
                         components::core::disable_usart >> setup_pin),  //
                     cib::extend<TestPositionLock>([](system_error_t event) {

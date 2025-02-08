@@ -24,7 +24,10 @@ struct impl {
         }),  //
         cib::extend<MainLoop>([]() {
             const auto current_time = micros();
-            internal::pid_controller.update(current_time, components::linear_encoder::read);
+
+            //! @todo This violates dependency inversion.
+            internal::pid_controller.update(current_time,
+                                            components::linear_encoder<encoder_A, encoder_B>::read);
         })  //
     );
 };
