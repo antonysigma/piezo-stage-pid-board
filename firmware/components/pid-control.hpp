@@ -17,7 +17,7 @@ namespace internal {
 PIDController controller{};
 }
 
-template <Micron z_min, Micron z_max>
+template <Micron z_min, Micron z_max, class Encoder>
 struct impl {
     static constexpr void setDesiredSystemOutput(const units::Micrometer<int16_t> value) {
         using utils::clamp;
@@ -29,9 +29,8 @@ struct impl {
         cib::extend<MainLoop>([]() {
             const auto current_time = micros();
 
-            //! @todo This violates dependency inversion.
-            const bool has_significant_change = internal::controller.update(
-                current_time, components::linear_encoder<encoder_A, encoder_B>::read);
+            const bool has_significant_change =
+                internal::controller.update(current_time, Encoder::read);
             if (has_significant_change) {
                 cib::service<MoveTo>(internal::controller.getSystemInput());
             }

@@ -35,8 +35,8 @@ PIDController::update(uint32_t currentMicros, readout_func encoder_readout_func)
     const float new_e = clamp(x_desired - new_x_actual, -eMax, eMax).value;
 
     const float compensated =
-        u  //
-           // Apply P gain
+        u                   //
+                            // Apply P gain
         + Kp * (new_e - e)  //
 
         // Apply I gain

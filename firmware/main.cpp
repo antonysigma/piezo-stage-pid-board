@@ -12,7 +12,6 @@
 
 //! @todo Why an out-of-class instantiation of static member?
 using my_actuator = components::actuator<DAC_ADDR>;
-using pid_controller_impl = components::pid_control::impl<z_min, z_max>;
 
 using D = decltype(my_actuator::dac);
 template <>
@@ -32,6 +31,8 @@ struct registered_interfaces {
 };
 
 using namespace components;
+using my_encoder = linear_encoder<encoder_A, encoder_B>;
+using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder>;
 struct project {
     static constexpr auto config = cib::components<  //
         registered_interfaces,                       //
@@ -41,7 +42,7 @@ struct project {
         position_lock::impl<lockLED>,  //
 
         // Sensors
-        linear_encoder<encoder_A, encoder_B>,  //
+        my_encoder,  //
 
         // Actuators
         my_actuator,  //
