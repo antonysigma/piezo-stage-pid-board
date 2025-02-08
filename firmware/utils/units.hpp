@@ -33,8 +33,9 @@ struct Micrometer {
     auto operator<=>(const Micrometer<T>& other) const = default;
 };
 
+template <typename T>
 struct Step {
-    int32_t value{};
+    T value{};
 
     auto operator<=>(const Step& other) const = default;
 };
@@ -74,8 +75,8 @@ operator*(const Rational<P, Q> a, const Rational<Q, R> b) {
 }
 
 template <class Q>
-constexpr Step
-operator*(const Rational<Step, Q> a, const Q b) {
+constexpr Step<int32_t>
+operator*(const Rational<Step<int32_t>, Q> a, const Q b) {
     return {static_cast<int32_t>(a.value * b.value)};
 }
 
@@ -113,7 +114,7 @@ operator""_us(uint64_t v) {
     return {static_cast<int32_t>(v)};
 }
 
-constexpr ::units::Step
+constexpr ::units::Step<int32_t>
 operator""_step(uint64_t v) {
     return {static_cast<int32_t>(v)};
 }

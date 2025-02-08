@@ -16,36 +16,39 @@ struct registered_interfaces {
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
         cib::exports<TestPositionLock>,          //
-        cib::exports<TestPIDFault>,              //
         cib::exports<OnIncomingMessage>          //
     );
 };
 
 using namespace components;
+
+// Sensors
 using my_encoder = linear_encoder<encoder_A, encoder_B>;
-using my_actuator = components::actuator<DAC_ADDR, my_encoder>;
-using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder, my_actuator>;
+
+// Actuators
+using my_actuator = actuator<DAC_ADDR, my_encoder>;
+
+// Indicators
+using my_alarm = alarm::impl<alarmLED>;
+
+// Controllers
+using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder, my_actuator, my_alarm>;
 
 struct project {
     static constexpr auto config = cib::components<  //
         registered_interfaces,                       //
         core::impl,                                  //
-        // Indicators
-        alarm::impl<alarmLED>,         //
-        position_lock::impl<lockLED>,  //
-
-        // Actuators
-        my_actuator,  //
+        my_alarm,                                    //
+        position_lock::impl<lockLED>,                //
+        my_actuator,                                 //
 
         // Command dispatcher
         command_parser::impl<pid_controller_impl>,  //
-
-        // Controllers
-        pid_controller_impl  //
+        pid_controller_impl                         //
         >;
 };
 
-}
+}  // namespace
 
 int
 main() {

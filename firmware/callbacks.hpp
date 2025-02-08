@@ -10,7 +10,6 @@ class RuntimeInit : public flow::service<> {};
 class MainLoop : public cib::callback_meta<> {};
 
 // Indicators
-class TestPIDFault : public cib::callback_meta<data_models::system_input_t> {};
 class TestPositionLock : public cib::callback_meta<data_models::system_error_t> {};
 
 // Incoming i2c messages

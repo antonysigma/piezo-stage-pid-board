@@ -44,7 +44,7 @@ struct actuator {
     });
 
     static constexpr void moveTo(data_models::dac_command_t position) {
-        dac.setVoltage(position.value, false);
+        dac.setVoltage(position.value.value, false);
     }
 
     constexpr static auto config = cib::config(  //

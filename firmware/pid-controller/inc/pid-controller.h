@@ -37,8 +37,8 @@ class PIDController {
     static constexpr uint16_t systemInputdefault = dac_offset;
 
    private:
-    units::Step x_desired{0};          // desired output
-    units::Step x_actual[2] = {0, 0};  // actual output
+    units::Step<int32_t> x_desired{0};          // desired output
+    units::Step<int32_t> x_actual[2] = {0, 0};  // actual output
 
     float e = 0;                   // Previous error value
     float u = systemInputdefault;  // Previous control input
@@ -52,7 +52,7 @@ class PIDController {
 
     //! @todo Should implement dependency injection here.
     [[nodiscard]] data_models::dac_command_t getSystemInput() const;
-    [[nodiscard]] units::Step getSystemOutput() const;
+    [[nodiscard]] units::Step<int32_t> getSystemOutput() const;
 
     using readout_func = data_models::encoder_readout_t (*)();
     bool update(uint32_t currentMicros, readout_func);

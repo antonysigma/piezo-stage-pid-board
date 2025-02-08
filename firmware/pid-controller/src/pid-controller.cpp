@@ -17,7 +17,7 @@ PIDController::getSystemInput() const {
     return {static_cast<uint16_t>(u)};
 }
 
-units::Step
+units::Step<int32_t>
 PIDController::getSystemOutput() const {
     return x_actual[0];
 }

@@ -8,17 +8,18 @@
 #include "callbacks.hpp"
 #include "components/core.hpp"
 #include "config.h"
-#include "data-models/pid-events.h"
+#include "data-models/dac-command.h"
 
 namespace components {
 namespace alarm {
 
-using data_models::system_input_t;
+using data_models::dac_command_t;
 
 namespace internal {
 // Guards
-constexpr auto systemInputExceedLimit = [](const system_input_t t) -> bool {
-    return t.value <= 0_step || t.value >= systemInputmax;
+constexpr auto systemInputExceedLimit = [](const dac_command_t t) -> bool {
+    using S = decltype(dac_command_t::value);
+    return t.value <= S(0) || t.value >= S(systemInputmax.value);
 };
 
 // Actions
@@ -31,8 +32,8 @@ struct AlarmState {
         return make_transition_table(
             // clang-format off
             *"init"_s = "monitoring"_s,
-            "monitoring"_s + event<system_input_t>[ systemInputExceedLimit ] / showAlarm = "monitoring"_s,
-            "monitoring"_s + event<system_input_t>[ not systemInputExceedLimit ] / silentAlarm = "monitoring"_s
+            "monitoring"_s + event<dac_command_t>[ systemInputExceedLimit ] / showAlarm = "monitoring"_s,
+            "monitoring"_s + event<dac_command_t>[ not systemInputExceedLimit ] / silentAlarm = "monitoring"_s
             // clang-format on
         );
     }
@@ -48,13 +49,12 @@ struct impl {
     static constexpr auto setup_pin =
         flow::action("AlarmInit"_sc, []() { pinMode(alarm_led_pin, OUTPUT); });
 
-    constexpr static auto config =
-        cib::config(cib::extend<RuntimeInit>(                           //
-                        components::core::disable_usart >> setup_pin),  //
-                    cib::extend<TestPIDFault>([](system_input_t event) {
-                        internal::alarm_state_machine.process_event(event);
-                    })  //
-        );
+    static void processEvent(dac_command_t event) {
+        internal::alarm_state_machine.process_event(event);
+    }
+
+    constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
+        components::core::disable_usart >> setup_pin));
 };
 
 }  // namespace alarm
