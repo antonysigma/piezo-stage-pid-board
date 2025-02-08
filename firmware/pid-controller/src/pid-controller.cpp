@@ -24,7 +24,7 @@ PIDController::getSystemOutput() const {
 
 units::Step<int32_t>
 PIDController::getSystemError() const {
-    return {static_cast<int32_t>(e)};
+    return e;
 }
 
 bool
@@ -38,18 +38,18 @@ PIDController::update(uint32_t currentMicros, readout_func encoder_readout_func)
 
     const auto new_x_actual = encoder_readout_func().value;
     // Compute system input error with slew rate limiter
-    const float new_e = clamp(x_desired - new_x_actual, -eMax, eMax).value;
+    const auto new_e = clamp(x_desired - new_x_actual, -eMax, eMax);
 
     const float compensated =
-        u                   //
-                            // Apply P gain
-        + Kp * (new_e - e)  //
+        u                         //
+                                  // Apply P gain
+        + Kp * (new_e - e).value  //
 
         // Apply I gain
-        + Ki_times_DeltaT * new_e
+        + Ki_times_DeltaT * new_e.value
 
         // Apply D gain based on system output only
-        + Kd_over_DeltaT * (new_x_actual.value - x_actual[0].value * 2.0f + x_actual[1].value);
+        + Kd_over_DeltaT * (new_x_actual.value - x_actual[0].value * 2 + x_actual[1].value);
 
     // Prevent integral windup
     // Show alarm when system input limit is reached

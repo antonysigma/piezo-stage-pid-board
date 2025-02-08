@@ -40,7 +40,7 @@ class PIDController {
     units::Step<int32_t> x_desired{0};          // desired output
     units::Step<int32_t> x_actual[2] = {0, 0};  // actual output
 
-    float e = 0;                   // Previous error value
+    units::Step<int32_t> e{0};     // Previous error value
     float u = systemInputdefault;  // Previous control input
 
     uint32_t previousMicros;  // will store last time LED was updated

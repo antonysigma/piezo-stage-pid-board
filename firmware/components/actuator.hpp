@@ -4,6 +4,7 @@
 #include <Wire.h>
 
 #include "components/command_parser.hpp"
+#include "data-models/dac-command.h"
 
 namespace components {
 
