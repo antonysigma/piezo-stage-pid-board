@@ -17,7 +17,7 @@ namespace internal {
 PIDController controller{};
 }
 
-template <Micron z_min, Micron z_max, class Encoder>
+template <Micron z_min, Micron z_max, class PositionSensor, class ZStage>
 struct impl {
     static constexpr void setDesiredSystemOutput(const units::Micrometer<int16_t> value) {
         using utils::clamp;
@@ -30,9 +30,9 @@ struct impl {
             const auto current_time = micros();
 
             const bool has_significant_change =
-                internal::controller.update(current_time, Encoder::read);
+                internal::controller.update(current_time, PositionSensor::read);
             if (has_significant_change) {
-                cib::service<MoveTo>(internal::controller.getSystemInput());
+                ZStage::moveTo(internal::controller.getSystemInput());
             }
         })  //
     );

@@ -23,16 +23,15 @@ struct registered_interfaces {
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
         cib::exports<TestPositionLock>,          //
-        cib::exports<MoveTo>,
-        cib::exports<TestPIDFault>,         //
-        cib::exports<ResetPositionSensor>,  //
-        cib::exports<OnIncomingMessage>     //
+        cib::exports<TestPIDFault>,              //
+        cib::exports<ResetPositionSensor>,       //
+        cib::exports<OnIncomingMessage>          //
     );
 };
 
 using namespace components;
 using my_encoder = linear_encoder<encoder_A, encoder_B>;
-using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder>;
+using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder, my_actuator>;
 struct project {
     static constexpr auto config = cib::components<  //
         registered_interfaces,                       //

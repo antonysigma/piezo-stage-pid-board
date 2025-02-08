@@ -16,8 +16,5 @@ class TestPositionLock : public cib::callback_meta<data_models::system_error_t> 
 // Sensors
 class ResetPositionSensor : public cib::callback_meta<> {};
 
-// Actuators
-class MoveTo : public cib::callback_meta<data_models::dac_command_t> {};
-
 // Incoming i2c messages
 class OnIncomingMessage : public cib::callback_meta<int> {};

@@ -43,11 +43,13 @@ struct actuator {
         cib::service<ResetPositionSensor>();
     });
 
+    static constexpr void moveTo(data_models::dac_command_t position) {
+        dac.setVoltage(position.value, false);
+    }
+
     constexpr static auto config = cib::config(  //
         cib::extend<RuntimeInit>(components::command_parser::setup_i2c >> setup_idx_input >>
-                                 setup_dac_connection >> search_idx),  //
-        cib::extend<MoveTo>(
-            [](data_models::dac_command_t position) { dac.setVoltage(position.value, false); })  //
+                                 setup_dac_connection >> search_idx)  //
     );
 };
 
