@@ -29,6 +29,8 @@ struct Micrometer {
         static_assert(std::is_same_v<T, int16_t>);
         return {value};
     }
+
+    auto operator<=>(const Micrometer<T>& other) const = default;
 };
 
 struct Step {

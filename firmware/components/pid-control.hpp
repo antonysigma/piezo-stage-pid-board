@@ -11,23 +11,30 @@
 namespace components {
 namespace pid_control {
 
+using Micron = units::Micrometer<int16_t>;
+
 namespace internal {
+PIDController controller{};
+}
 
-PIDController pid_controller{};
-}  // namespace internal
-
+template <Micron z_min, Micron z_max>
 struct impl {
+    static constexpr void setDesiredSystemOutput(const units::Micrometer<int16_t> value) {
+        using utils::clamp;
+        const auto clamped_position = clamp(value, z_min, z_max);
+        internal::controller.setDesiredSystemOutput(clamped_position);
+    }
+
     constexpr static auto config = cib::config(  //
-        cib::extend<SetDesiredSystemOutput>([](data_models::position_t desired_position) {
-            using UM16 = units::Micrometer<int16_t>;
-            internal::pid_controller.setDesiredSystemOutput(UM16{desired_position.data.value});
-        }),  //
         cib::extend<MainLoop>([]() {
             const auto current_time = micros();
 
             //! @todo This violates dependency inversion.
-            internal::pid_controller.update(current_time,
-                                            components::linear_encoder<encoder_A, encoder_B>::read);
+            const bool has_significant_change = internal::controller.update(
+                current_time, components::linear_encoder<encoder_A, encoder_B>::read);
+            if (has_significant_change) {
+                cib::service<MoveTo>(internal::controller.getSystemInput());
+            }
         })  //
     );
 };

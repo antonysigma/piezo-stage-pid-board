@@ -17,3 +17,6 @@ constexpr uint16_t dac_offset =
 
 constexpr auto systemInputmax = 4095_step;
 constexpr auto sampleTime = 500_us;
+
+constexpr units::Micrometer<int16_t> z_min{-50};
+constexpr units::Micrometer<int16_t> z_max{250};

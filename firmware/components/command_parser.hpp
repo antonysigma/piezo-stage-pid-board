@@ -24,33 +24,30 @@ static constexpr auto setup_i2c = flow::action("I2CInit"_sc, []() {
     Wire.onReceive(cib::service<OnIncomingMessage>);
 });
 
+template <class Controller>
 struct impl {
-    constexpr static auto config = cib::config(
-        cib::extend<RuntimeInit>(                           //
-            components::core::disable_usart >> setup_i2c),  //
-        cib::extend<OnIncomingMessage>([](int) {
-            auto& buffer = internal::position_command.data.buffer;
-            buffer[0] = Wire.read();
-            buffer[1] = Wire.read();
-            internal::has_new_position = true;
-        }),  //
-        cib::extend<MainLoop>([]() {
-            using internal::has_new_position;
-            using internal::position_command;
-            using utils::clamp;
-            if (has_new_position) {
-                // When the new position command is received, execute it.
-                data_models::position_t clamped_position{};
+    constexpr static auto config =
+        cib::config(cib::extend<RuntimeInit>(                           //
+                        components::core::disable_usart >> setup_i2c),  //
+                    cib::extend<OnIncomingMessage>([](int) {
+                        auto& buffer = internal::position_command.data.buffer;
+                        buffer[0] = Wire.read();
+                        buffer[1] = Wire.read();
+                        internal::has_new_position = true;
+                    }),  //
+                    cib::extend<MainLoop>([]() {
+                        using internal::has_new_position;
+                        using internal::position_command;
+                        using utils::clamp;
+                        if (has_new_position) {
+                            //! @todo Explicit casting defeats the purpose of SI units.
+                            const int16_t retrieved_value = position_command.data.value;
 
-                //! @todo Explicitly casting defeats the purpose of SI units.
-                clamped_position.data.value = clamp(position_command.data.value, -50, 250);
-
-                // How do I send a message to another component?
-                cib::service<SetDesiredSystemOutput>(clamped_position);
-
-                has_new_position = false;
-            }
-        }));
+                            using Micron = units::Micrometer<int16_t>;
+                            Controller::setDesiredSystemOutput(Micron{retrieved_value});
+                            has_new_position = false;
+                        }
+                    }));
 };
 
 }  // namespace command_parser

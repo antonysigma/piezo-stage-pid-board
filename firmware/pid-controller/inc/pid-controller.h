@@ -55,5 +55,5 @@ class PIDController {
     [[nodiscard]] units::Step getSystemOutput() const;
 
     using readout_func = data_models::encoder_readout_t (*)();
-    void update(uint32_t currentMicros, readout_func);
+    bool update(uint32_t currentMicros, readout_func);
 };

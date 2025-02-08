@@ -19,8 +19,5 @@ class ResetPositionSensor : public cib::callback_meta<> {};
 // Actuators
 class MoveTo : public cib::callback_meta<data_models::dac_command_t> {};
 
-// Controllers
-class SetDesiredSystemOutput : public cib::callback_meta<data_models::position_t> {};
-
 // Incoming i2c messages
 class OnIncomingMessage : public cib::callback_meta<int> {};

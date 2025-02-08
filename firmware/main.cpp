@@ -11,22 +11,23 @@
 #include "components/position-lock.hpp"
 
 //! @todo Why an out-of-class instantiation of static member?
-using D = decltype(components::actuator<DAC_ADDR>::dac);
+using my_actuator = components::actuator<DAC_ADDR>;
+using pid_controller_impl = components::pid_control::impl<z_min, z_max>;
+
+using D = decltype(my_actuator::dac);
 template <>
-D components::actuator<DAC_ADDR>::dac{};
+D my_actuator::dac{};
 
 namespace {
 struct registered_interfaces {
     static constexpr auto config = cib::config(  //
         cib::exports<RuntimeInit>,               //
         cib::exports<MainLoop>,                  //
-        cib::exports<SetDesiredSystemOutput>,    //
         cib::exports<TestPositionLock>,          //
         cib::exports<MoveTo>,
-        cib::exports<TestPIDFault>,            //
-        cib::exports<SetDesiredSystemOutput>,  //
-        cib::exports<ResetPositionSensor>,     //
-        cib::exports<OnIncomingMessage>        //
+        cib::exports<TestPIDFault>,         //
+        cib::exports<ResetPositionSensor>,  //
+        cib::exports<OnIncomingMessage>     //
     );
 };
 
@@ -43,13 +44,13 @@ struct project {
         linear_encoder<encoder_A, encoder_B>,  //
 
         // Actuators
-        actuator<DAC_ADDR>,  //
+        my_actuator,  //
 
         // Command dispatcher
-        command_parser::impl,  //
+        command_parser::impl<pid_controller_impl>,  //
 
         // Controllers
-        pid_control::impl  //
+        pid_controller_impl  //
         >;
 };
 
