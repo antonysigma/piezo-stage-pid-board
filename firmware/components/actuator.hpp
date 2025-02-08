@@ -9,7 +9,7 @@ namespace components {
 
 template <uint8_t dac_addr, class PositionSensor>
 struct actuator {
-    static Adafruit_MCP4725 dac;
+    static inline Adafruit_MCP4725 dac{};
 
     static constexpr auto setup_dac_connection = flow::action("DACInit"_sc, []() {
         // For Adafruit MCP4725A1 the address is 0x62 (default) or 0x63 (ADDR pin tied to VCC)

@@ -10,6 +10,7 @@
 #include "components/pid-control.hpp"
 #include "components/position-lock.hpp"
 
+namespace {
 struct registered_interfaces {
     static constexpr auto config = cib::config(  //
         cib::exports<RuntimeInit>,               //
@@ -24,11 +25,6 @@ using namespace components;
 using my_encoder = linear_encoder<encoder_A, encoder_B>;
 using my_actuator = components::actuator<DAC_ADDR, my_encoder>;
 using pid_controller_impl = pid_control::impl<z_min, z_max, my_encoder, my_actuator>;
-
-//! @todo Why an out-of-class instantiation of static member?
-using D = decltype(my_actuator::dac);
-template <>
-D my_actuator::dac{};
 
 struct project {
     static constexpr auto config = cib::components<  //
@@ -48,6 +44,8 @@ struct project {
         pid_controller_impl  //
         >;
 };
+
+}
 
 int
 main() {
