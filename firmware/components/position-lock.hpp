@@ -69,13 +69,13 @@ struct impl {
     static constexpr auto setup_pin =
         flow::action("PositionLockInit"_sc, []() { pinMode(lock_led_pin, OUTPUT); });
 
-    static constexpr auto config =
-        cib::config(cib::extend<RuntimeInit>(                           //
-                        components::core::disable_usart >> setup_pin),  //
-                    cib::extend<TestPositionLock>([](system_error_t event) {
-                        internal::position_lock_state_machine.process_event(event);
-                    })  //
-        );
+    static constexpr void processEvent(system_error_t event) {
+        internal::position_lock_state_machine.process_event(event);
+    }
+
+    static constexpr auto config = cib::config(cib::extend<RuntimeInit>(  //
+        components::core::disable_usart >> setup_pin)                     //
+    );
 };
 
 }  // namespace position_lock

@@ -17,7 +17,8 @@ namespace internal {
 PIDController controller{};
 }
 
-template <Micron z_min, Micron z_max, class PositionSensor, class ZStage, class Alarm>
+template <Micron z_min, Micron z_max, class PositionSensor, class ZStage, class Alarm,
+          class PositionLock>
 struct impl {
     static constexpr void setDesiredSystemOutput(const units::Micrometer<int16_t> value) {
         using utils::clamp;
@@ -38,6 +39,7 @@ struct impl {
             }
 
             Alarm::processEvent({new_system_input});
+            PositionLock::processEvent({internal::controller.getSystemError()});
         })  //
     );
 };

@@ -21,6 +21,12 @@ units::Step<int32_t>
 PIDController::getSystemOutput() const {
     return x_actual[0];
 }
+
+units::Step<int32_t>
+PIDController::getSystemError() const {
+    return {static_cast<int32_t>(e)};
+}
+
 bool
 PIDController::update(uint32_t currentMicros, readout_func encoder_readout_func) {
     using utils::clamp;

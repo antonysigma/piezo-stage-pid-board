@@ -53,6 +53,7 @@ class PIDController {
     //! @todo Should implement dependency injection here.
     [[nodiscard]] data_models::dac_command_t getSystemInput() const;
     [[nodiscard]] units::Step<int32_t> getSystemOutput() const;
+    [[nodiscard]] units::Step<int32_t> getSystemError() const;
 
     using readout_func = data_models::encoder_readout_t (*)();
     bool update(uint32_t currentMicros, readout_func);
