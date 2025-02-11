@@ -46,15 +46,15 @@ boost::sml::sm<AlarmState, dispatch_t> alarm_state_machine;
 
 template <uint8_t alarm_led_pin>
 struct impl {
-    static constexpr auto setup_pin =
-        flow::action("AlarmInit"_sc, []() { pinMode(alarm_led_pin, OUTPUT); });
+    static constexpr auto init_alarm =
+        flow::action("InitAlarm"_sc, []() { pinMode(alarm_led_pin, OUTPUT); });
 
     static void processEvent(dac_command_t event) {
         internal::alarm_state_machine.process_event(event);
     }
 
     constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
-        components::core::disable_usart >> setup_pin));
+        components::core::disable_usart >> init_alarm));
 };
 
 }  // namespace alarm
