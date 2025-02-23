@@ -22,25 +22,25 @@ struct registered_interfaces {
 using namespace components;
 
 // Sensors
-using my_encoder = linear_encoder<encoder_A, encoder_B>;
+using linear_encoder = LinearEncoder<encoder_A, encoder_B>;
 
 // Actuators
-using my_actuator = actuator<DAC_ADDR, my_encoder>;
+using actuator = Actuator<DAC_ADDR, linear_encoder>;
 
 // Indicators
-using my_alarm = alarm::impl<alarmLED>;
-using my_position_lock = position_lock::impl<lockLED>;
+using alarm = Alarm::impl<alarmLED>;
+using position_lock = PositionLock::impl<lockLED>;
 
 // Controllers
 using pid_controller_impl =
-    pid_control::impl<z_min, z_max, my_encoder, my_actuator, my_alarm, my_position_lock>;
+    pid_control::impl<z_min, z_max, linear_encoder, actuator, alarm, position_lock>;
 
 struct project {
     static constexpr auto config = cib::components<  //
         registered_interfaces,                       //
         core::impl,                                  //
-        my_alarm,                                    //
-        my_actuator,                                 //
+        alarm,                                       //
+        actuator,                                    //
 
         // Command dispatcher
         command_parser::impl<pid_controller_impl>,  //

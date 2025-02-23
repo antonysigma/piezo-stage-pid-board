@@ -8,7 +8,7 @@
 namespace components {
 
 template <uint8_t A_pin, uint8_t B_pin>
-class linear_encoder {
+class LinearEncoder {
     static inline Encoder encoder{A_pin, B_pin};
 
    public:

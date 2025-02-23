@@ -11,7 +11,7 @@
 #include "data-models/dac-command.h"
 
 namespace components {
-namespace alarm {
+namespace Alarm {
 
 using data_models::dac_command_t;
 
@@ -57,5 +57,5 @@ struct impl {
         components::core::disable_usart >> init_alarm));
 };
 
-}  // namespace alarm
+}  // namespace Alarm
 }  // namespace components

@@ -10,7 +10,7 @@
 #include "data-models/pid-events.h"
 
 namespace components {
-namespace position_lock {
+namespace PositionLock {
 
 using data_models::system_error_t;
 
@@ -78,5 +78,5 @@ struct impl {
     );
 };
 
-}  // namespace position_lock
+}  // namespace PositionLock
 }  // namespace components

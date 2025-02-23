@@ -9,7 +9,7 @@
 namespace components {
 
 template <uint8_t dac_addr, class PositionSensor>
-struct actuator {
+struct Actuator {
     static inline Adafruit_MCP4725 dac{};
 
     static constexpr auto setup_dac_connection = flow::action("DACInit"_sc, []() {
