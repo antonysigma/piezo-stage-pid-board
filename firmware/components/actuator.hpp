@@ -49,7 +49,9 @@ struct Actuator {
     }
 
     constexpr static auto config = cib::config(  //
-        cib::extend<RuntimeInit>(components::command_parser::setup_i2c >> setup_idx_input >>
+        cib::extend<RuntimeInit>(
+            components::core::enable_interrupt >> setup_idx_input, //
+            components::command_parser::setup_i2c >> setup_idx_input >>
                                  setup_dac_connection >> search_idx)  //
     );
 };

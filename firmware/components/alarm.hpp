@@ -54,7 +54,7 @@ struct impl {
     }
 
     constexpr static auto config = cib::config(cib::extend<RuntimeInit>(  //
-        components::core::disable_usart >> init_alarm));
+        components::core::disable_interrupt >> init_alarm >> components::core::enable_interrupt));
 };
 
 }  // namespace Alarm

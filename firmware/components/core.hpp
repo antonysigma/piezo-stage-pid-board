@@ -6,8 +6,13 @@
 
 namespace components {
 namespace core {
+    static constexpr auto disable_interrupt = flow::action("DisableInterrupt"_sc, []() {
+    cli();
+    });
+    static constexpr auto enable_interrupt = flow::action("EnableInterrupt"_sc, []() {
+        sei();
+    });
 static constexpr auto timer0_init = flow::action("TimerInit"_sc, []() {
-    sei();
 
 #if defined(__AVR_ATmega128__)
     // CPU specific: different values for the ATmega128
@@ -39,7 +44,9 @@ static constexpr auto disable_usart = flow::action("DisableUSART"_sc, []() {
 
 struct impl {
     constexpr static auto config = cib::config(                 //
-        cib::extend<RuntimeInit>(timer0_init >> disable_usart)  //
+        cib::extend<RuntimeInit>(
+            disable_interrupt >> timer0_init >> enable_interrupt, //
+            disable_interrupt >> disable_usart >> enable_interrupt) //
     );
 };
 

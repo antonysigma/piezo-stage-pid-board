@@ -28,7 +28,7 @@ template <class Controller>
 struct impl {
     constexpr static auto config =
         cib::config(cib::extend<RuntimeInit>(                           //
-                        components::core::disable_usart >> setup_i2c),  //
+                        components::core::disable_interrupt >> setup_i2c >> components::core::enable_interrupt),  //
                     cib::extend<OnIncomingMessage>([](int) {
                         auto& buffer = internal::position_command.data.buffer;
                         buffer[0] = Wire.read();

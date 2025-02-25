@@ -74,7 +74,7 @@ struct impl {
     }
 
     static constexpr auto config = cib::config(cib::extend<RuntimeInit>(  //
-        components::core::disable_usart >> init_position_lock_led)        //
+        components::core::disable_interrupt >> init_position_lock_led >> components::core::enable_interrupt)        //
     );
 };
 
